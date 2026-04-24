@@ -1,8 +1,5 @@
 import React from 'react';
 import { LandingNavbar } from './LandingNavbar';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Play, ShieldAlert, BarChart3, Globe } from 'lucide-react';
-import { cn } from '../../../utils/cn';
 import blackhole from '../../../assets/solar.jpg'
 
 

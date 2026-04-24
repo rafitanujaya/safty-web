@@ -19,12 +19,12 @@ export function CTASection() {
           Start protecting.
         </h2>
 
-        <Link to="/dashboard" className="group inline-flex items-center gap-3 px-10 py-5 rounded-2xl bg-slate-900 text-white font-bold text-lg hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-[0_10px_40px_rgba(0,0,0,0.1)] mb-6">
-          Open Dashboard
+        <Link to="/register" className="group inline-flex items-center gap-3 px-10 py-5 rounded-2xl bg-slate-900 text-white font-bold text-lg hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-[0_10px_40px_rgba(0,0,0,0.1)] mb-6">
+          Get Started
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </Link>
 
-        <p className="text-sm text-slate-400 font-medium">Free · No sign-up · Chrome, Firefox & Edge</p>
+        <p className="text-sm text-slate-400 font-medium">Free forever · Easy setup · Chrome, Firefox & Edge</p>
       </div>
 
       {/* Footer */}

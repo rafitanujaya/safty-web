@@ -2,17 +2,27 @@ import React from 'react';
 import { Badge, type BadgeVariant } from '../../../components/atoms/Badge';
 import { useRecentDetections } from '../../../hooks/useDashboardData';
 import { Loader2 } from 'lucide-react';
-import type { ThreatCategory } from '../../../api/mockData';
+import { type SeverityLevel } from '../../../api/mockData';
 
 export function RecentDetectionsTable() {
   const { data: detections, isLoading } = useRecentDetections();
 
   const getStatusBadge = (status: string): BadgeVariant => {
     switch (status) {
-      case 'Blocked': return 'success';
+      case 'Blocked': return 'success'; // You might want a 'danger' style if possible, but let's keep success as 'safely blocked'
       case 'Warning': return 'warning';
       case 'Passed': return 'default';
       default: return 'default';
+    }
+  };
+
+  const getSeverityColor = (severity: SeverityLevel) => {
+    switch (severity) {
+      case 'Critical': return 'text-red-600 bg-red-50 border-red-100';
+      case 'High': return 'text-orange-600 bg-orange-50 border-orange-100';
+      case 'Medium': return 'text-yellow-600 bg-yellow-50 border-yellow-100';
+      case 'Low': return 'text-blue-600 bg-blue-50 border-blue-100';
+      default: return 'text-slate-600 bg-slate-50 border-slate-100';
     }
   };
 
@@ -25,7 +35,7 @@ export function RecentDetectionsTable() {
     <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden flex flex-col">
       <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">Best Selling Products</h3>
+          <h3 className="text-base font-bold text-slate-900 tracking-tight">Recent Detections</h3>
           <p className="text-xs text-slate-400 mt-0.5">Intercepted domains across your subnet</p>
         </div>
         <button className="text-slate-400 hover:text-slate-600 transition-colors">
@@ -41,11 +51,11 @@ export function RecentDetectionsTable() {
         <table className="w-full text-sm text-left">
           <thead className="text-[11px] text-slate-400 uppercase tracking-wider bg-slate-50/50 border-b border-slate-100">
             <tr>
-              <th className="px-6 py-3 font-semibold">#</th>
-              <th className="px-6 py-3 font-semibold">Name</th>
+              <th className="px-6 py-3 font-semibold">Time</th>
+              <th className="px-6 py-3 font-semibold">Domain</th>
               <th className="px-6 py-3 font-semibold">Action</th>
-              <th className="px-6 py-3 font-semibold">Revenue</th>
-              <th className="px-6 py-3 font-semibold">Rating</th>
+              <th className="px-6 py-3 font-semibold">Severity</th>
+              <th className="px-6 py-3 font-semibold">Risk Score</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
@@ -56,20 +66,30 @@ export function RecentDetectionsTable() {
                 </td>
               </tr>
             ) : (
-              detections?.map((d, i) => (
+              detections?.map((d) => (
                 <tr key={d.id} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-6 py-3.5 text-slate-400 font-mono text-xs">#{(83009 + i).toString()}</td>
+                  <td className="px-6 py-3.5 text-slate-400 font-mono text-xs whitespace-nowrap">
+                    {new Date(d.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </td>
                   <td className="px-6 py-3.5">
                     <span className="font-medium text-slate-700 truncate max-w-[200px] block">{d.domain}</span>
+                    <span className="text-xs text-slate-400 mt-0.5 block">{d.category}</span>
                   </td>
                   <td className="px-6 py-3.5">
                     <Badge variant={getStatusBadge(d.status)}>{d.status}</Badge>
                   </td>
-                  <td className="px-6 py-3.5 text-slate-600 font-medium">
-                    <span className="text-emerald-600">◉</span> ${(d.riskScore * 1347).toLocaleString()}
+                  <td className="px-6 py-3.5">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${getSeverityColor(d.severity)}`}>
+                      {d.severity}
+                    </span>
                   </td>
-                  <td className="px-6 py-3.5 text-slate-600 font-medium">
-                    <span className="text-amber-500">★</span> {(d.riskScore / 20).toFixed(1)}
+                  <td className="px-6 py-3.5">
+                    <div className="flex items-center gap-2">
+                       <span className="text-slate-700 font-bold">{d.riskScore}</span>
+                       <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div className={`h-full ${d.riskScore > 80 ? 'bg-red-500' : d.riskScore > 50 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${d.riskScore}%`}} />
+                       </div>
+                    </div>
                   </td>
                 </tr>
               ))

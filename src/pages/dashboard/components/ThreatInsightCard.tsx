@@ -1,14 +1,17 @@
 import React from 'react';
 import { useUserInsight } from '../../../hooks/useDashboardData';
-import { TrendingDown, TrendingUp, ShieldCheck, ShieldAlert, Loader2 } from 'lucide-react';
+import { ShieldCheck, Lightbulb, TrendingUp, AlertTriangle, Loader2 } from 'lucide-react';
 
 export function ThreatInsightCard() {
   const { data: insight, isLoading } = useUserInsight();
 
   return (
-    <div className="col-span-1 bg-white rounded-2xl border border-slate-100 p-6 flex flex-col">
+    <div className="col-span-1 bg-white rounded-2xl border border-slate-100 p-6 flex flex-col h-full bg-gradient-to-b from-white to-slate-50/50">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-base font-bold text-slate-900 tracking-tight">Repeat Customer Rate</h3>
+        <div className="flex items-center gap-2">
+           <Lightbulb className="w-5 h-5 text-amber-500 fill-amber-50" />
+           <h3 className="text-base font-bold text-slate-900 tracking-tight">Intelligent Insights</h3>
+        </div>
         <button className="text-slate-400 hover:text-slate-600 transition-colors">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <circle cx="10" cy="4" r="1.5" />
@@ -23,48 +26,45 @@ export function ThreatInsightCard() {
           <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
         </div>
       ) : (
-        <div className="flex-1 flex flex-col">
-          {/* Circular Gauge */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="relative">
-              <svg className="w-40 h-40 transform -rotate-90">
-                <circle cx="80" cy="80" r="68" stroke="#f1f5f9" strokeWidth="12" fill="transparent" />
-                <circle
-                  cx="80" cy="80" r="68" stroke="#10b981" strokeWidth="12" fill="transparent"
-                  strokeDasharray={427.26} strokeDashoffset={427.26 - (427.26 * insight.weeklyRiskScore) / 100}
-                  strokeLinecap="round"
-                  className="transition-all duration-1000"
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-slate-900">{insight.weeklyRiskScore}%</span>
-                <span className="text-xs text-slate-400 font-medium mt-1">On track for 80% target</span>
-              </div>
-            </div>
+        <div className="flex-1 flex flex-col gap-4">
+          {/* Main Insight */}
+          <div className="bg-blue-50/60 border border-blue-100 p-4 rounded-xl flex items-start gap-3">
+             <TrendingUp className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+             <div>
+                <p className="text-sm font-semibold text-slate-900 leading-snug">
+                  {insight.trendInsight}
+                </p>
+                <p className="text-xs text-slate-500 mt-1">Our engine automatically adjusted rules to counteract this peak.</p>
+             </div>
           </div>
 
-          {/* Stats */}
-          <div className="space-y-3 mt-6">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50">
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                <span className="text-sm text-slate-600 font-medium">Prevented</span>
-              </div>
-              <span className="text-sm font-bold text-slate-900">{insight.preventedIncidents}</span>
-            </div>
-
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50">
-              <div className="flex items-center gap-3">
-                <ShieldAlert className="w-4 h-4 text-amber-500" />
-                <span className="text-sm text-slate-600 font-medium">Near-miss</span>
-              </div>
-              <span className="text-sm font-bold text-slate-900">{insight.nearMissEvents}</span>
-            </div>
+          {/* Secondary Insight */}
+          <div className="bg-amber-50/50 border border-amber-100 p-4 rounded-xl flex items-start gap-3">
+             <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+             <div>
+                <p className="text-sm font-semibold text-slate-900 leading-snug">
+                  {insight.originInsight}
+                </p>
+             </div>
           </div>
 
-          <button className="w-full mt-4 text-center text-sm text-blue-600 font-semibold hover:text-blue-700 transition-colors">
-            Show details
-          </button>
+          {/* Summary Stat */}
+          <div className="mt-auto">
+             <div className="h-px w-full bg-slate-100 mb-4" />
+             <div className="flex items-center justify-between">
+                <div>
+                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Total Prevented</p>
+                   <p className="text-2xl font-black text-emerald-600 tracking-tight flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5" />
+                      {insight.preventedIncidents.toLocaleString()}
+                   </p>
+                </div>
+                <div className="text-right">
+                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Risk Score</p>
+                   <p className="text-2xl font-black text-slate-900 tracking-tight">{insight.weeklyRiskScore}</p>
+                </div>
+             </div>
+          </div>
         </div>
       )}
     </div>

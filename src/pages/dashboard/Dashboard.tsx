@@ -4,7 +4,7 @@ import { OverviewCards } from './components/OverviewCards';
 import { TrendChart } from './components/TrendChart';
 import { CategoryBreakdown } from './components/CategoryBreakdown';
 import { RecentDetectionsTable } from './components/RecentDetectionsTable';
-import { TopFlaggedWebsites } from './components/TopFlaggedWebsites';
+import { TopThreatSources } from './components/TopThreatSources';
 import { ActivityLog } from './components/ActivityLog';
 import { ThreatInsightCard } from './components/ThreatInsightCard';
 import { FileDown } from 'lucide-react';
@@ -53,7 +53,7 @@ export function Dashboard() {
         {/* Bottom Row */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-4">
           <div className="lg:col-span-2">
-            <TopFlaggedWebsites />
+            <TopThreatSources />
           </div>
           <ThreatInsightCard />
         </div>

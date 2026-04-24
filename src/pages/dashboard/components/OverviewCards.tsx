@@ -1,6 +1,6 @@
 import React from 'react';
 import { useOverviewStats } from '../../../hooks/useDashboardData';
-import { Activity, ShieldCheck, ShieldAlert, AlertCircle, TrendingUp, TrendingDown } from 'lucide-react';
+import { ShieldCheck, ShieldAlert, AlertTriangle, AlertCircle } from 'lucide-react';
 import { cn } from '../../../utils/cn';
 
 export function OverviewCards() {
@@ -15,16 +15,16 @@ export function OverviewCards() {
   }
 
   const items = [
-    { label: 'Page Views', value: stats.totalScanned.toLocaleString(), icon: Activity, trend: '+15.6%', trendUp: true, trendLabel: 'vs. 13,653 last period', iconColor: 'text-blue-600 bg-blue-50' },
-    { label: 'Suspicious', value: stats.suspiciousDetected, icon: ShieldAlert, trend: '+8.4%', trendUp: true, trendLabel: 'vs. 6,702 last period', iconColor: 'text-amber-600 bg-amber-50' },
-    { label: 'Safe Websites', value: stats.safeWebsites.toLocaleString(), icon: ShieldCheck, trend: '+10.6%', trendUp: true, trendLabel: 'vs. 3,284 last period', iconColor: 'text-emerald-600 bg-emerald-50' },
-    { label: 'Alerts Today', value: stats.todayAlerts, icon: AlertCircle, trend: '-4.4%', trendUp: false, trendLabel: 'vs. 1,196 last period', iconColor: 'text-red-600 bg-red-50' },
+    { label: 'Total Threats Blocked', value: stats.totalThreats.toLocaleString(), icon: ShieldCheck, trend: '+12.4%', trendUp: true, trendLabel: 'vs. last 7 days', iconColor: 'text-emerald-600 bg-emerald-50' },
+    { label: 'Phishing Detections', value: stats.phishingDetections.toLocaleString(), icon: ShieldAlert, trend: '+23.1%', trendUp: false, trendLabel: 'vs. last 7 days', iconColor: 'text-red-600 bg-red-50' },
+    { label: 'Malicious Activity', value: stats.maliciousActivity.toLocaleString(), icon: AlertTriangle, trend: '-5.2%', trendUp: true, trendLabel: 'vs. last 7 days', iconColor: 'text-amber-600 bg-amber-50' },
+    { label: 'Suspicious Interactions', value: stats.suspiciousInteractions.toLocaleString(), icon: AlertCircle, trend: '+8.4%', trendUp: false, trendLabel: 'vs. last 7 days', iconColor: 'text-blue-600 bg-blue-50' },
   ];
 
   return (
     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
       {items.map((item, index) => (
-        <div key={index} className="bg-white rounded-2xl border border-slate-100 p-5 hover:shadow-sm transition-all">
+        <div key={index} className="bg-white rounded-2xl border border-slate-100 p-5 hover:shadow-sm transition-all focus-within:ring-2 focus-within:ring-slate-200">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm text-slate-500 font-medium">{item.label}</span>
             <div className={cn('p-2 rounded-xl', item.iconColor)}>

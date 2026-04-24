@@ -1,4 +1,61 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ============================================================
+   DESIGN TOKENS — SafeGuardX
+   Tailwind v4 @theme block: semua token di sini otomatis
+   tersedia sebagai utility class (bg-*, text-*, font-*, dll.)
+   ============================================================ */
+@theme {
+  /* ── Typography ─────────────────────────────────────── */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Font sizes — skala tipografi aplikasi */
+  --text-display: 5.5rem;   /* 88px — hero headline */
+  --text-h1:      4rem;     /* 64px — seksi utama    */
+  --text-h2:      3rem;     /* 48px — sub-seksi      */
+  --text-h3:      2rem;     /* 32px — card title     */
+  --text-h4:      1.5rem;   /* 24px — sub-title      */
+  --text-h5:      1.25rem;  /* 20px — label besar    */
+  --text-h6:      1rem;     /* 16px — body           */
+  --text-sm:      0.875rem; /* 14px — caption        */
+  --text-xs:      0.75rem;  /* 12px — label kecil    */
+
+  /* ── Brand Colors ───────────────────────────────────── */
+
+  /* Space / background palette (galaxy dark theme) */
+  --color-space-950:  #020817;  /* latar paling gelap (auth, body dark) */
+  --color-space-900:  #060d1e;  /* card dark, section threat             */
+  --color-space-800:  #0a1628;  /* border gelap, sidebar dark            */
+  --color-space-700:  #0f2040;  /* elemen hover dark                     */
+
+  /* Primary — Indigo (CTA, button, focus ring) */
+  --color-primary:       #4f46e5;  /* indigo-600  */
+  --color-primary-light: #6366f1;  /* indigo-500  */
+  --color-primary-dark:  #3730a3;  /* indigo-800  */
+  --color-primary-glow:  rgba(99, 102, 241, 0.35);
+
+  /* Accent — Blue (highlight, icon, chart line) */
+  --color-accent:        #2563eb;  /* blue-600   */
+  --color-accent-light:  #3b82f6;  /* blue-500   */
+  --color-accent-dark:   #1d4ed8;  /* blue-700   */
+  --color-accent-glow:   rgba(37, 99, 235, 0.3);
+
+  /* Status colors */
+  --color-success:  #10b981;  /* emerald-500 — aman / blocked */
+  --color-warning:  #f59e0b;  /* amber-500   — suspicious     */
+  --color-danger:   #ef4444;  /* red-500     — threat / alert */
+  --color-info:     #3b82f6;  /* blue-500    — info           */
+
+  /* Neutral (landing page light mode) */
+  --color-neutral-50:  #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-700: #334155;
+  --color-neutral-900: #0f172a;
+}
 
 @layer base {
   body {

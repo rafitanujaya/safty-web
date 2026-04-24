@@ -14,7 +14,7 @@ export function WhySafeGuardXSection() {
   ];
 
   return (
-    <section ref={ref} className="bg-slate-50 py-32 md:py-40 px-6 md:px-12 lg:px-20 max-w-[1600px] mx-auto w-full">
+    <section ref={ref} id="why" className="bg-slate-50 py-32 md:py-40 px-6 md:px-12 lg:px-20 max-w-[1600px] mx-auto w-full">
       <div className="max-w-6xl mx-auto">
 
         {/* Asymmetric two-column: big text left, stacked items right */}

@@ -49,9 +49,7 @@ export function Sidebar() {
         {/* Search */}
         <div className="px-4 py-4">
           <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-sm text-slate-400">
-            <span className="text-slate-400">🔍</span>
             <span>Search anything...</span>
-            <span className="ml-auto text-xs bg-white border border-slate-200 rounded-md px-1.5 py-0.5 text-slate-400 font-mono">⌘K</span>
           </div>
         </div>
 

@@ -8,7 +8,7 @@ export function DashboardPreviewSection() {
   const { ref, isVisible } = useScrollReveal(0.1);
 
   return (
-    <section ref={ref} className="bg-white py-28 md:py-36 px-6 md:px-12 lg:px-20 max-w-[1600px] mx-auto w-full">
+    <section ref={ref} id="dashboard" className="bg-white py-28 md:py-36 px-6 md:px-12 lg:px-20 max-w-[1600px] mx-auto w-full">
 
       {/* Full-width single card with embedded mockup */}
       <div className={cn(
