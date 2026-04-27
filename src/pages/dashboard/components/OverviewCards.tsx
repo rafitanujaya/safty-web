@@ -15,7 +15,7 @@ export function OverviewCards() {
   }
 
   const items = [
-    { label: 'Total Threats Blocked', value: stats.totalThreats.toLocaleString(), icon: ShieldCheck, trend: '+12.4%', trendUp: true, trendLabel: 'vs. last 7 days', iconColor: 'text-emerald-600 bg-emerald-50' },
+    { label: 'Total Threats Blocked', value: stats.totalThreatsBlocked.toLocaleString(), icon: ShieldCheck, trend: '+12.4%', trendUp: true, trendLabel: 'vs. last 7 days', iconColor: 'text-emerald-600 bg-emerald-50' },
     { label: 'Phishing Detections', value: stats.phishingDetections.toLocaleString(), icon: ShieldAlert, trend: '+23.1%', trendUp: false, trendLabel: 'vs. last 7 days', iconColor: 'text-red-600 bg-red-50' },
     { label: 'Malicious Activity', value: stats.maliciousActivity.toLocaleString(), icon: AlertTriangle, trend: '-5.2%', trendUp: true, trendLabel: 'vs. last 7 days', iconColor: 'text-amber-600 bg-amber-50' },
     { label: 'Suspicious Interactions', value: stats.suspiciousInteractions.toLocaleString(), icon: AlertCircle, trend: '+8.4%', trendUp: false, trendLabel: 'vs. last 7 days', iconColor: 'text-blue-600 bg-blue-50' },

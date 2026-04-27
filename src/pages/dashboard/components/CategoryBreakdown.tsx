@@ -52,7 +52,7 @@ export function CategoryBreakdown() {
             {/* Center text */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-3xl font-bold text-slate-900">
-                {categoryData.find(c => c.name === 'High')?.value || categoryData[1]?.value}%
+                {categoryData.find(c => c.name === 'HIGH')?.value || categoryData[1]?.value}%
               </span>
               <span className="text-xs text-slate-400 font-medium">High/Critical</span>
             </div>

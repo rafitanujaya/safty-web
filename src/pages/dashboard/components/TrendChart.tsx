@@ -14,7 +14,7 @@ export function TrendChart() {
           <h3 className="text-base font-bold text-slate-900 tracking-tight">Threat Detection Trend (Last 7 Days)</h3>
           <div className="flex items-baseline gap-3 mt-1">
             <span className="text-3xl font-bold text-slate-900">
-              {stats?.totalThreats.toLocaleString() ?? '0'}
+              {stats?.totalThreatsBlocked.toLocaleString() ?? '0'}
             </span>
             <span className="text-xs font-semibold text-red-600 bg-red-50 px-1.5 py-0.5 rounded flex items-center gap-1">
               <TrendingUp className="w-3 h-3" />

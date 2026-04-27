@@ -41,7 +41,7 @@ export function TopThreatSources() {
                 <span className="text-xs font-bold text-slate-400 w-5 text-center">{index + 1}</span>
                 <div>
                   <p className="text-sm font-semibold text-slate-700 truncate max-w-[200px]">{site.domain}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{site.count} intercepts</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{site.total_intercepts} intercepts</p>
                 </div>
               </div>
               <div className="flex flex-col items-end">
