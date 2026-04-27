@@ -15,7 +15,7 @@ export function AuthLayout({ headline, description, children }: AuthLayoutProps)
 
       {/* ── Left Panel: Visual ───────────────────────── */}
       <div
-        className="hidden md:flex md:w-[40%] relative flex-col justify-between"
+        className="hidden md:flex md:w-[55%] relative flex-col justify-between"
         style={{
           backgroundImage: `url(${blackhole})`,
           backgroundSize: 'cover',
@@ -36,7 +36,7 @@ export function AuthLayout({ headline, description, children }: AuthLayoutProps)
 
         {/* Bottom headline */}
         <div className="relative z-10 p-10 pb-12">
-          <h2 className="text-h2 font-bold text-white leading-[1.15] tracking-tight">
+          <h2 className="text-h2 font-bold text-white leading-[1.35] tracking-tight">
             {headline}
           </h2>
           <p className="text-h7 text-white/50 mt-5 leading-relaxed max-w-[300px]">
