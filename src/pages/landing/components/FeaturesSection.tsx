@@ -66,7 +66,7 @@ export function FeaturesSection() {
             6 Layers of <br className="hidden md:block" />Browser Protection
           </h2>
           <p className="text-lg text-slate-500 font-medium leading-relaxed max-w-2xl mx-auto">
-            SafeGuardX is a browser extension that acts as your personal security guard, actively monitoring every web interaction for threats.
+            Safty is a browser extension that acts as your personal security guard, actively monitoring every web interaction for threats.
           </p>
         </div>
 

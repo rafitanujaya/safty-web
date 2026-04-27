@@ -29,7 +29,7 @@ export function CTASection() {
 
       {/* Footer */}
       <div className="mt-24 pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between text-sm text-slate-400 font-medium">
-        <span className="text-slate-500 font-semibold mb-4 md:mb-0">SafeGuardX © {new Date().getFullYear()}</span>
+        <span className="text-slate-500 font-semibold mb-4 md:mb-0">Safty © {new Date().getFullYear()}</span>
         <div className="flex items-center gap-6">
           <a href="#" className="hover:text-slate-600 transition-colors">Privacy</a>
           <a href="#" className="hover:text-slate-600 transition-colors">Terms</a>

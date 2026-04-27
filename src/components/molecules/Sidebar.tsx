@@ -36,7 +36,7 @@ export function Sidebar() {
         {/* Logo */}
         <div className="flex items-center justify-between h-[64px] px-6 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <span className="text-base font-bold text-slate-900 tracking-tight">SAFEGUARDX</span>
+            <span className="text-base font-bold text-slate-900 tracking-tight">SAFTY</span>
           </div>
           <button
             onClick={toggleSidebar}

@@ -9,19 +9,19 @@ export function RecentDetectionsTable() {
 
   const getStatusBadge = (status: string): BadgeVariant => {
     switch (status) {
-      case 'Blocked': return 'success'; // You might want a 'danger' style if possible, but let's keep success as 'safely blocked'
-      case 'Warning': return 'warning';
-      case 'Passed': return 'default';
+      case 'BLOCKED': return 'success'; 
+      case 'WARNING': return 'warning';
+      case 'LOGGED': return 'default';
       default: return 'default';
     }
   };
 
   const getSeverityColor = (severity: SeverityLevel) => {
     switch (severity) {
-      case 'Critical': return 'text-red-600 bg-red-50 border-red-100';
-      case 'High': return 'text-orange-600 bg-orange-50 border-orange-100';
-      case 'Medium': return 'text-yellow-600 bg-yellow-50 border-yellow-100';
-      case 'Low': return 'text-blue-600 bg-blue-50 border-blue-100';
+      case 'CRITICAL': return 'text-red-600 bg-red-50 border-red-100';
+      case 'HIGH': return 'text-orange-600 bg-orange-50 border-orange-100';
+      case 'MEDIUM': return 'text-yellow-600 bg-yellow-50 border-yellow-100';
+      case 'LOW': return 'text-blue-600 bg-blue-50 border-blue-100';
       default: return 'text-slate-600 bg-slate-50 border-slate-100';
     }
   };
@@ -69,14 +69,14 @@ export function RecentDetectionsTable() {
               detections?.map((d) => (
                 <tr key={d.id} className="hover:bg-slate-50/50 transition-colors">
                   <td className="px-6 py-3.5 text-slate-400 font-mono text-xs whitespace-nowrap">
-                    {new Date(d.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(d.detected_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </td>
                   <td className="px-6 py-3.5">
                     <span className="font-medium text-slate-700 truncate max-w-[200px] block">{d.domain}</span>
                     <span className="text-xs text-slate-400 mt-0.5 block">{d.category}</span>
                   </td>
                   <td className="px-6 py-3.5">
-                    <Badge variant={getStatusBadge(d.status)}>{d.status}</Badge>
+                    <Badge variant={getStatusBadge(d.action_taken)}>{d.action_taken}</Badge>
                   </td>
                   <td className="px-6 py-3.5">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${getSeverityColor(d.severity)}`}>

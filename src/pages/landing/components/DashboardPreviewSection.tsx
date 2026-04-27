@@ -47,7 +47,7 @@ export function DashboardPreviewSection() {
               </div>
               <div className="flex-1 max-w-xs mx-auto">
                 <div className="bg-white/[0.04] rounded-lg px-3 py-1 text-[11px] text-slate-500 font-mono text-center border border-white/[0.04]">
-                  safeguardx.app/dashboard
+                  safty.app/dashboard
                 </div>
               </div>
             </div>

@@ -36,10 +36,10 @@ export const useTopFlaggedWebsites = () => {
   });
 };
 
-export const useUserInsight = () => {
+export const useSystemInsight = () => {
   return useQuery({
     queryKey: ['dashboard', 'insight'],
-    queryFn: dashboardService.getUserInsight,
+    queryFn: dashboardService.getSystemInsight,
   });
 };
 

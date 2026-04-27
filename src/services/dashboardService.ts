@@ -1,4 +1,4 @@
-import { initialMockActivities, mockCategoryData, mockDetections, mockOverviewStats, mockTopFlagged, mockTrendData, mockUserInsight, type ActivityEvent, type CategoryData, type Detection, type FlaggedWebsite, type OverviewStats, type TrendDataPoint, type UserInsight } from "../api/mockData";
+import { initialMockActivities, mockCategoryData, mockDetections, mockOverviewStats, mockTopFlagged, mockTrendData, mockUserInsight, type ActivityEvent, type CategoryData, type Detection, type FlaggedWebsite, type OverviewStats, type TrendDataPoint, type SystemInsight } from "../api/mockData";
 
 
 // Helper to simulate network latency
@@ -30,7 +30,7 @@ export const dashboardService = {
     return mockTopFlagged;
   },
 
-  getUserInsight: async (): Promise<UserInsight> => {
+  getSystemInsight: async (): Promise<SystemInsight> => {
     await delay(500);
     return mockUserInsight;
   },

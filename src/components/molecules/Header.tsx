@@ -1,6 +1,6 @@
-import React from 'react';
-import { Bell, Menu, User, Sun, Calendar } from 'lucide-react';
-import { useDashboardStore } from '../../store/useDashboardStore';
+import React from "react";
+import { Bell, Menu, User, Sun, Calendar } from "lucide-react";
+import { useDashboardStore } from "../../store/useDashboardStore";
 
 export function Header() {
   const { toggleSidebar } = useDashboardStore();
@@ -14,24 +14,9 @@ export function Header() {
         >
           <Menu className="w-5 h-5" />
         </button>
-        
-        <h1 className="text-lg font-bold text-slate-900 tracking-tight hidden md:block">Dashboard</h1>
       </div>
 
       <div className="flex items-center gap-2">
-        {/* Date Range */}
-        <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100 text-sm text-slate-500 font-medium">
-          <Calendar className="w-4 h-4 text-slate-400" />
-          <span>Jan 1, 2025 - Feb 1, 2025</span>
-        </div>
-
-        {/* Period Selector */}
-        <select defaultValue="30d" className="hidden md:block text-sm bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-slate-600 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all">
-          <option value="7d">Last 7 Days</option>
-          <option value="30d">Last 30 Days</option>
-          <option value="90d">Last 90 Days</option>
-        </select>
-
         {/* Theme Toggle */}
         <button className="p-2 rounded-xl text-slate-400 hover:bg-slate-50 transition-colors">
           <Sun className="w-[18px] h-[18px]" />

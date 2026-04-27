@@ -19,20 +19,21 @@ export function ActivityLog() {
 
     const streamInterval = setInterval(() => {
       const liveEvents: Partial<ActivityEvent>[] = [
-        { action: 'Background Scan', domain: 'google.com', severity: 'info' },
-        { action: 'Phishing Prevented', domain: 'login-amazon-update.com', severity: 'high' },
-        { action: 'Tracker Blocked', domain: 'free-robux-gen.net', severity: 'medium' },
-        { action: 'Blocked Download', domain: 'invoice_2024.exe.zip', severity: 'high' },
-        { action: 'Background Scan', domain: 'tailwindcss.com', severity: 'info' },
+        { event_type: 'BACKGROUND_SCAN', action_taken: 'LOGGED', domain: 'google.com', severity: 'LOW' },
+        { event_type: 'PHISHING_PREVENTED', action_taken: 'BLOCKED', domain: 'login-amazon-update.com', severity: 'HIGH' },
+        { event_type: 'TRACKER_BLOCKED', action_taken: 'BLOCKED', domain: 'free-robux-gen.net', severity: 'MEDIUM' },
+        { event_type: 'DOWNLOAD_BLOCKED', action_taken: 'BLOCKED', domain: 'invoice_2024.exe.zip', severity: 'HIGH' },
+        { event_type: 'BACKGROUND_SCAN', action_taken: 'LOGGED', domain: 'tailwindcss.com', severity: 'LOW' },
       ];
 
       const randomEvent = liveEvents[Math.floor(Math.random() * liveEvents.length)];
       const newEvent: ActivityEvent = {
         id: Math.random().toString(),
-        action: randomEvent.action as ActivityEvent['action'],
+        event_type: randomEvent.event_type as ActivityEvent['event_type'],
+        action_taken: randomEvent.action_taken as ActivityEvent['action_taken'],
         domain: randomEvent.domain!,
         severity: randomEvent.severity as ActivityEvent['severity'],
-        timestamp: new Date().toISOString(),
+        detected_at: new Date().toISOString(),
       };
 
       // Add simple pulse effect hint
@@ -42,20 +43,25 @@ export function ActivityLog() {
     return () => clearInterval(streamInterval);
   }, [initialData]);
 
-  const getEventIcon = (action: string) => {
-    if (action.includes('Phishing')) return <AlertTriangle className="w-3.5 h-3.5" />;
-    if (action.includes('Form') || action.includes('Tracker')) return <MousePointerClick className="w-3.5 h-3.5" />;
-    if (action.includes('Download')) return <FileWarning className="w-3.5 h-3.5" />;
+  const getEventIcon = (eventType: string) => {
+    if (eventType.includes('PHISHING')) return <AlertTriangle className="w-3.5 h-3.5" />;
+    if (eventType.includes('TRACKER') || eventType.includes('INTERACTION')) return <MousePointerClick className="w-3.5 h-3.5" />;
+    if (eventType.includes('DOWNLOAD')) return <FileWarning className="w-3.5 h-3.5" />;
     return <Shield className="w-3.5 h-3.5" />;
   };
 
   const getSeverityDot = (severity: string) => {
     switch (severity) {
-      case 'high': return 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]';
-      case 'medium': return 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]';
-      case 'info': return 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]';
+      case 'CRITICAL': 
+      case 'HIGH': return 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]';
+      case 'MEDIUM': return 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]';
+      case 'LOW': return 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]';
       default: return 'bg-slate-400';
     }
+  };
+
+  const formatEventType = (type: string) => {
+    return type.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   };
 
   return (
@@ -94,11 +100,22 @@ export function ActivityLog() {
               >
                 <div className={cn('w-2 h-2 rounded-full shrink-0', getSeverityDot(activity.severity))} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-700 truncate">{activity.action}</p>
+                  <div className="flex items-center gap-2 mb-0.5">
+                    {getEventIcon(activity.event_type)}
+                    <span className="text-xs font-bold text-slate-700 truncate">{formatEventType(activity.event_type)}</span>
+                     <span className={cn(
+                         "text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider",
+                         activity.action_taken === 'BLOCKED' ? 'bg-red-50 text-red-600 border border-red-100' :
+                         activity.action_taken === 'WARNING' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                         'bg-slate-100 text-slate-500 border border-slate-200'
+                     )}>
+                         {activity.action_taken}
+                     </span>
+                  </div>
                   <p className="text-xs text-slate-500 font-mono truncate">{activity.domain}</p>
                 </div>
                 <span className="text-[11px] text-slate-400 font-semibold whitespace-nowrap bg-white px-2 py-1 rounded shadow-sm border border-slate-100">
-                  {new Date(activity.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                  {new Date(activity.detected_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                 </span>
               </div>
             ))}

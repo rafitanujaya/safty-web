@@ -21,7 +21,7 @@ export function RegisterPage() {
   return (
     <AuthLayout
       headline={<>Start Your<br />Security<br />Journey</>}
-      description="Join 50,000+ security analysts protecting their digital environment with SafeGuardX."
+      description="Join 50,000+ security analysts protecting their digital environment with Safty."
     >
       {/* Heading */}
       <div className="mb-10">
@@ -29,7 +29,7 @@ export function RegisterPage() {
           Create Account
         </h1>
         <p className="text-h7 text-neutral-500 mt-2">
-          Enter your details to get started with SafeGuardX
+          Enter your details to get started with Safty
         </p>
       </div>
 
