@@ -1,4 +1,5 @@
 import { initialMockActivities, mockCategoryData, mockDetections, mockOverviewStats, mockTopFlagged, mockTrendData, mockUserInsight, type ActivityEvent, type CategoryData, type Detection, type FlaggedWebsite, type OverviewStats, type TrendDataPoint, type SystemInsight } from "../api/mockData";
+import { fetchApi } from '../api/api';
 
 
 // Helper to simulate network latency
@@ -38,5 +39,14 @@ export const dashboardService = {
   getInitialActivities: async (): Promise<ActivityEvent[]> => {
     await delay(400);
     return initialMockActivities;
+  },
+
+  // Real API endpoints from SAFTY-BE
+  getSummaryApi: () => {
+    return fetchApi('dashboard/summary', { method: 'GET' });
+  },
+
+  getRecentEventsApi: () => {
+    return fetchApi('dashboard/events', { method: 'GET' });
   }
 };
