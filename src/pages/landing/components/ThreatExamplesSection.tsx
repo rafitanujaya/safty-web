@@ -1,122 +1,86 @@
 import React from 'react';
-import { AlertTriangle, Ban, FileWarning, Shield, Clock } from 'lucide-react';
 import { useScrollReveal } from '../../../hooks/useScrollReveal';
 import { cn } from '../../../utils/cn';
+
+const testimonials = [
+  {
+    name: 'Rina Kusuma',
+    role: 'Software Engineer',
+    avatar: 'RK',
+    color: 'bg-blue-500',
+    quote: 'Safty caught a phishing page that looked identical to my bank\'s login. Genuinely saved my account.',
+  },
+  {
+    name: 'Budi Santoso',
+    role: 'Freelance Designer',
+    avatar: 'BS',
+    color: 'bg-indigo-500',
+    quote: 'I download a lot of client files. Knowing every file gets scanned before opening gives me real peace of mind.',
+  },
+  {
+    name: 'Alicia Chen',
+    role: 'Marketing Manager',
+    avatar: 'AC',
+    color: 'bg-purple-500',
+    quote: 'The image forensic feature exposed a fake payment screenshot in a client deal. Would have lost thousands.',
+  },
+  {
+    name: 'Dimas Pratama',
+    role: 'Security Researcher',
+    avatar: 'DP',
+    color: 'bg-cyan-500',
+    quote: 'As someone who studies threats professionally, I\'m impressed by the detection accuracy. Sub-50ms is real.',
+  },
+];
 
 export function ThreatExamplesSection() {
   const { ref, isVisible } = useScrollReveal(0.1);
 
   return (
-    <section ref={ref} id="threats" className="bg-[#060d1e] py-24 md:py-32 px-6 md:px-12 lg:px-20 max-w-[1600px] mx-auto w-full rounded-[2.5rem] my-8 overflow-hidden relative">
+    <section ref={ref} id="threats" className="bg-[#F3F6FC] py-28 px-6 md:px-12 lg:px-20">
+      <div className="max-w-6xl mx-auto">
 
-      {/* Subtle ambient glow */}
-      <div className="absolute top-0 right-[20%] w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+        {/* Header */}
+        <div className={cn(
+          'text-center mb-14 max-w-2xl mx-auto transition-all duration-700',
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        )}>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+            What users say about<br />
+            <span className="text-[#0967F7]">Safty</span>
+          </h2>
+          <p className="text-slate-400 text-lg font-medium">Trusted by thousands of users who browse smarter and safer every day.</p>
+        </div>
 
-      <div className={cn(
-        'text-center mb-14 transition-all duration-700',
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      )}>
-        <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-          Real Threats. Neutralized.
-        </h2>
-        <p className="text-slate-500 font-medium max-w-lg mx-auto">
-          Examples of attacks our engine has intercepted in real time.
-        </p>
-      </div>
+        {/* Testimonials grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {testimonials.map((t, i) => (
+            <div
+              key={i}
+              className={cn(
+                'rounded-3xl bg-white border border-slate-100 p-7 flex flex-col gap-5 hover:shadow-md transition-all duration-500',
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              )}
+              style={{ transitionDelay: isVisible ? `${i * 100}ms` : '0ms' }}
+            >
+              {/* Quote */}
+              <p className="text-slate-600 text-[15px] leading-relaxed font-medium flex-1">
+                "{t.quote}"
+              </p>
 
-      {/* Bento-style layout */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 max-w-5xl mx-auto relative z-10">
-
-        {/* Large card — spans 3 columns */}
-        <div
-          className={cn(
-            'md:col-span-3 p-8 md:p-10 rounded-3xl bg-white/[0.04] border border-white/[0.06] backdrop-blur-sm flex flex-col justify-between min-h-[240px] transition-all duration-500 hover:bg-white/[0.07]',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-          )}
-          style={{ transitionDelay: '100ms' }}
-        >
-          <div className="flex items-center gap-3 mb-5">
-            <div className="p-2 rounded-xl bg-red-500/15 text-red-400">
-              <AlertTriangle className="w-5 h-5" />
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-50">
+                <div className={cn('w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0', t.color)}>
+                  {t.avatar}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-800">{t.name}</p>
+                  <p className="text-xs text-slate-400">{t.role}</p>
+                </div>
+              </div>
             </div>
-            <span className="text-xs font-bold text-red-400/80 uppercase tracking-widest">Phishing · Critical</span>
-          </div>
-          <div>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Fake Login Page</h3>
-            <p className="text-sm text-slate-400 leading-relaxed mb-3">
-              A clone of PayPal's login designed to steal user credentials using a near-identical domain.
-            </p>
-            <p className="text-sm text-slate-500 font-mono">secure-login-paypal-verify.com</p>
-          </div>
+          ))}
         </div>
-
-        {/* Small card — spans 2 columns */}
-        <div
-          className={cn(
-            'md:col-span-2 p-8 rounded-3xl bg-white/[0.04] border border-white/[0.06] backdrop-blur-sm flex flex-col justify-between min-h-[240px] transition-all duration-500 hover:bg-white/[0.07]',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-          )}
-          style={{ transitionDelay: '250ms' }}
-        >
-          <div className="flex items-center gap-3 mb-5">
-            <div className="p-2 rounded-xl bg-amber-500/15 text-amber-400">
-              <FileWarning className="w-5 h-5" />
-            </div>
-            <span className="text-xs font-bold text-amber-400/80 uppercase tracking-widest">Download · High</span>
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-2">Trojan Disguised as PDF</h3>
-            <p className="text-sm text-slate-400 leading-relaxed mb-3">
-              A ZIP file posing as an invoice that contained a hidden keylogger executable.
-            </p>
-            <p className="text-sm text-slate-500 font-mono">invoice-782.zip</p>
-          </div>
-        </div>
-
-        {/* Small card — spans 2 columns */}
-        <div
-          className={cn(
-            'md:col-span-2 p-8 rounded-3xl bg-white/[0.04] border border-white/[0.06] backdrop-blur-sm flex flex-col justify-between min-h-[220px] transition-all duration-500 hover:bg-white/[0.07]',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-          )}
-          style={{ transitionDelay: '400ms' }}
-        >
-          <div className="flex items-center gap-3 mb-5">
-            <div className="p-2 rounded-xl bg-blue-500/15 text-blue-400">
-              <Ban className="w-5 h-5" />
-            </div>
-            <span className="text-xs font-bold text-blue-400/80 uppercase tracking-widest">Harvesting · Critical</span>
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-2">Card Skimmer Overlay</h3>
-            <p className="text-sm text-slate-400 leading-relaxed mb-3">
-              A hidden JS overlay on a checkout page designed to capture credit card data.
-            </p>
-            <p className="text-sm text-slate-500 font-mono">bank-update.info</p>
-          </div>
-        </div>
-
-        {/* Wide banner card — spans 3 columns */}
-        <div
-          className={cn(
-            'md:col-span-3 p-7 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-6 transition-all duration-500 hover:bg-emerald-500/15',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-          )}
-          style={{ transitionDelay: '550ms' }}
-        >
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
-          </div>
-          <div className="flex-1">
-            <span className="text-lg font-bold text-emerald-400">All threats neutralized.</span>
-            <span className="text-slate-500 ml-3 text-sm font-medium">Your browsing session is secure.</span>
-          </div>
-          <div className="hidden md:flex items-center gap-4 text-sm text-slate-400">
-            <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-emerald-500" /> 847K blocked</span>
-            <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-emerald-500" /> {'<'}15ms avg</span>
-          </div>
-        </div>
-
       </div>
     </section>
   );

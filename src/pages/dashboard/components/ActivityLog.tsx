@@ -52,7 +52,7 @@ export function ActivityLog() {
 
   const getSeverityDot = (severity: string) => {
     switch (severity) {
-      case 'CRITICAL': 
+      case 'CRITICAL':
       case 'HIGH': return 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]';
       case 'MEDIUM': return 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]';
       case 'LOW': return 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]';
@@ -66,8 +66,6 @@ export function ActivityLog() {
 
   return (
     <div className="col-span-1 bg-white rounded-2xl border border-slate-100 p-5 flex flex-col min-h-[380px] relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500" />
-      
       <div className="flex items-center justify-between mb-5 mt-1">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -103,14 +101,14 @@ export function ActivityLog() {
                   <div className="flex items-center gap-2 mb-0.5">
                     {getEventIcon(activity.event_type)}
                     <span className="text-xs font-bold text-slate-700 truncate">{formatEventType(activity.event_type)}</span>
-                     <span className={cn(
-                         "text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider",
-                         activity.action_taken === 'BLOCKED' ? 'bg-red-50 text-red-600 border border-red-100' :
-                         activity.action_taken === 'WARNING' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
-                         'bg-slate-100 text-slate-500 border border-slate-200'
-                     )}>
-                         {activity.action_taken}
-                     </span>
+                    <span className={cn(
+                      "text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider",
+                      activity.action_taken === 'BLOCKED' ? 'bg-red-50 text-red-600 border border-red-100' :
+                        activity.action_taken === 'WARNING' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                          'bg-slate-100 text-slate-500 border border-slate-200'
+                    )}>
+                      {activity.action_taken}
+                    </span>
                   </div>
                   <p className="text-xs text-slate-500 font-mono truncate">{activity.domain}</p>
                 </div>

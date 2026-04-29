@@ -1,4 +1,27 @@
-import { initialMockActivities, mockCategoryData, mockDetections, mockOverviewStats, mockTopFlagged, mockTrendData, mockUserInsight, type ActivityEvent, type CategoryData, type Detection, type FlaggedWebsite, type OverviewStats, type TrendDataPoint, type SystemInsight } from "../api/mockData";
+import {
+  initialMockActivities,
+  mockCategoryData,
+  mockDetections,
+  mockOverviewStats,
+  mockTopFlagged,
+  mockTrendData,
+  mockUserInsight,
+  mockDangerousFiles,
+  mockEducationArticles,
+  mockProtectionConfig,
+  mockThreatHistory,
+  type ActivityEvent,
+  type CategoryData,
+  type Detection,
+  type FlaggedWebsite,
+  type OverviewStats,
+  type TrendDataPoint,
+  type SystemInsight,
+  type DangerousFile,
+  type EducationArticle,
+  type ProtectionConfig,
+  type ThreatHistoryEntry,
+} from "../api/mockData";
 import { fetchApi } from '../api/api';
 
 
@@ -39,6 +62,31 @@ export const dashboardService = {
   getInitialActivities: async (): Promise<ActivityEvent[]> => {
     await delay(400);
     return initialMockActivities;
+  },
+
+  getDangerousFiles: async (): Promise<DangerousFile[]> => {
+    await delay(700);
+    return mockDangerousFiles;
+  },
+
+  getEducationArticles: async (): Promise<EducationArticle[]> => {
+    await delay(500);
+    return mockEducationArticles;
+  },
+
+  getProtectionConfig: async (): Promise<ProtectionConfig> => {
+    await delay(400);
+    return mockProtectionConfig;
+  },
+
+  updateProtectionConfig: async (config: Partial<ProtectionConfig>): Promise<ProtectionConfig> => {
+    await delay(300);
+    return { ...mockProtectionConfig, ...config };
+  },
+
+  getThreatHistory: async (): Promise<ThreatHistoryEntry[]> => {
+    await delay(800);
+    return mockThreatHistory;
   },
 
   // Real API endpoints from SAFTY-BE

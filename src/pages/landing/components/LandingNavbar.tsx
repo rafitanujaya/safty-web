@@ -26,34 +26,32 @@ export function LandingNavbar() {
       <div className={cn(
         'mx-auto flex items-center justify-between transition-all duration-300 ease-out',
         scrolled
-          ? 'max-w-5xl bg-[#060d1e] backdrop-blur-3xl border border-white/10 rounded-full px-6 py-4 shadow-[0_8px_32px_rgba(0,0,0,0.3)]'
+          ? 'max-w-5xl bg-white border border-slate-200 rounded-full px-6 py-3.5 shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
           : 'max-w-[1600px] bg-transparent px-6 md:px-10 py-5 md:py-6'
       )}>
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 text-white group">
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-7 h-7 rounded-lg bg-[#0967F7] flex items-center justify-center">
+            <svg viewBox="0 0 20 20" fill="white" className="w-4 h-4"><path fillRule="evenodd" d="M10 1.5L3 5v5c0 4.418 3.134 8.548 7 9.5C13.866 18.548 17 14.418 17 10V5L10 1.5z" clipRule="evenodd" /></svg>
+          </div>
           <span className={cn(
-            'font-bold tracking-[0.2em] uppercase transition-all',
+            'font-bold tracking-tight transition-all text-slate-900',
             scrolled ? 'text-base' : 'text-lg'
-          )}>SafeGuardX</span>
+          )}>Safty</span>
         </Link>
 
         {/* Center Nav Links */}
-        <div className={cn(
-          'hidden lg:flex items-center gap-1 rounded-full transition-all duration-300',
-          scrolled
-            ? 'px-0 py-0 bg-transparent border-transparent'
-            : 'px-2 py-1.5 bg-white/5 border border-white/10 backdrop-blur-lg'
-        )}>
+        <div className="hidden lg:flex items-center gap-1">
           {NAV_LINKS.map((item) => (
             <a
               key={item.label}
               href={item.href}
               className={cn(
-                'rounded-full font-medium transition-all duration-200',
+                'rounded-full font-medium transition-all duration-200 px-4 py-2 text-sm',
                 scrolled
-                  ? 'px-4 py-2 text-sm text-slate-300 hover:text-white'
-                  : 'px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10'
+                  ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-black/5'
               )}
             >
               {item.label}
@@ -66,8 +64,8 @@ export function LandingNavbar() {
           <Link
             to="/login"
             className={cn(
-              'hidden md:inline-flex font-medium text-slate-300 hover:text-white transition-colors',
-              scrolled ? 'text-sm px-3' : 'text-sm px-4 py-2'
+              'hidden md:inline-flex font-semibold transition-colors text-sm px-4 py-2',
+              scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-700 hover:text-slate-900'
             )}
           >
             Log in
@@ -75,7 +73,7 @@ export function LandingNavbar() {
           <Link
             to="/register"
             className={cn(
-              'flex items-center gap-2 rounded-full bg-white text-slate-900 font-semibold hover:bg-blue-50 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.15)]',
+              'flex items-center gap-2 rounded-full bg-[#0967F7] text-white font-semibold hover:bg-[#0967F7]/90 transition-all hover:scale-105 shadow-[0_2px_12px_rgba(9,103,247,0.25)]',
               scrolled ? 'px-4 py-2 text-sm' : 'px-5 py-2.5 text-sm'
             )}
           >

@@ -49,3 +49,31 @@ export const useInitialActivities = () => {
     queryFn: dashboardService.getInitialActivities,
   });
 };
+
+export const useDangerousFiles = () => {
+  return useQuery({
+    queryKey: ['dashboard', 'dangerousFiles'],
+    queryFn: dashboardService.getDangerousFiles,
+  });
+};
+
+export const useEducationArticles = () => {
+  return useQuery({
+    queryKey: ['education', 'articles'],
+    queryFn: dashboardService.getEducationArticles,
+  });
+};
+
+export const useProtectionConfig = () => {
+  return useQuery({
+    queryKey: ['settings', 'config'],
+    queryFn: dashboardService.getProtectionConfig,
+  });
+};
+
+export const useThreatHistory = () => {
+  return useQuery({
+    queryKey: ['history', 'threats'],
+    queryFn: dashboardService.getThreatHistory,
+  });
+};
