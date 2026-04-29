@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { DashboardLayout } from '../../components/organisms/DashboardLayout';
+import { useScanFile } from '../../hooks/useFiles';
 import { cn } from '../../utils/cn';
 import {
   Upload, File, FileText, Archive, Code2, AlertTriangle, CheckCircle2,
@@ -26,27 +27,6 @@ interface HistoryEntry {
   size: string;
 }
 
-function simulateScan(file: File): Promise<ScanResult> {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
-      const dangerous = ['exe','bat','cmd','scr','vbs','ps1'];
-      const suspicious = ['zip','rar','7z','iso'];
-      let riskScore = Math.floor(Math.random() * 25) + 5;
-      let detections = ['No known threats detected'];
-      if (dangerous.includes(ext)) {
-        riskScore = Math.floor(Math.random() * 25) + 70;
-        detections = ['Executable file detected', 'Known malicious signature', 'Suspicious behavior pattern'];
-      } else if (suspicious.includes(ext)) {
-        riskScore = Math.floor(Math.random() * 25) + 38;
-        detections = ['Compressed archive – contents unverified', 'Double extension detected'];
-      }
-      const verdict: Verdict = riskScore >= 65 ? 'MALICIOUS' : riskScore >= 35 ? 'SUSPICIOUS' : 'SAFE';
-      const riskLevel: RiskLevel = riskScore >= 65 ? 'HIGH' : riskScore >= 35 ? 'MEDIUM' : 'LOW';
-      resolve({ riskLevel, riskScore, verdict, detections, scanDuration: 2.4 });
-    }, 2200);
-  });
-}
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -261,6 +241,7 @@ export function FileProtectionPage() {
   const [file, setFile]           = useState<File | null>(null);
   const [result, setResult]       = useState<ScanResult | null>(null);
   const [history, setHistory]     = useState<HistoryEntry[]>([]);
+  const { mutateAsync: scanFileMutation } = useScanFile();
 
   const handleFile = async (f: File) => {
     setFile(f); setResult(null);
@@ -270,10 +251,15 @@ export function FileProtectionPage() {
       setProgress(p);
     }
     setScanState('scanning');
-    const res = await simulateScan(f);
-    setResult(res);
-    setScanState('result');
-    setHistory(prev => [{ id: Date.now().toString(), filename: f.name, verdict: res.verdict, size: formatBytes(f.size) }, ...prev.slice(0, 4)]);
+    try {
+      const res = await scanFileMutation(f);
+      setResult(res);
+      setScanState('result');
+      setHistory(prev => [{ id: Date.now().toString(), filename: f.name, verdict: res.verdict as Verdict, size: formatBytes(f.size) }, ...prev.slice(0, 4)]);
+    } catch (e) {
+      console.error(e);
+      setScanState('idle');
+    }
   };
 
   const handleReset = () => { setScanState('idle'); setFile(null); setResult(null); setProgress(0); };

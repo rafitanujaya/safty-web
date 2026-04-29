@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DashboardLayout } from '../../components/organisms/DashboardLayout';
-import { useThreatHistory } from '../../hooks/useDashboardData';
+import { useThreatHistory } from '../../hooks/useThreatHistory';
 import { HistorySummaryCards } from './components/HistorySummaryCards';
 import { HistoryControls } from './components/HistoryControls';
 import { HistoryTable } from './components/HistoryTable';
@@ -16,7 +16,8 @@ const CATEGORIES: (ThreatCategory | 'ALL')[] = [
 const SEVERITY_ORDER = { CRITICAL: 4, HIGH: 3, MEDIUM: 2, LOW: 1 } as const;
 
 export function HistoryPage() {
-  const { data: history, isLoading } = useThreatHistory();
+  const { data, isLoading } = useThreatHistory();
+  const history = data?.items || [];
 
   const [searchQuery, setSearchQuery]       = useState('');
   const [filterCategory, setFilterCategory] = useState<ThreatCategory | 'ALL'>('ALL');
@@ -45,17 +46,17 @@ export function HistoryPage() {
     })
     .sort((a, b) => {
       let cmp = 0;
-      if (sortField === 'timestamp')  cmp = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+      if (sortField === 'timestamp')  cmp = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       if (sortField === 'riskScore')  cmp = a.riskScore - b.riskScore;
-      if (sortField === 'severity')   cmp = SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity];
+      if (sortField === 'severity')   cmp = SEVERITY_ORDER[a.riskLevel as keyof typeof SEVERITY_ORDER] - SEVERITY_ORDER[b.riskLevel as keyof typeof SEVERITY_ORDER];
       return sortDirection === 'asc' ? cmp : -cmp;
     });
 
   // Summary stats derived from filtered list
-  const totalBlocked = filteredAndSorted.filter(e => e.action_taken === 'BLOCKED').length;
-  const totalWarning  = filteredAndSorted.filter(e => e.action_taken === 'WARNING').length;
+  const totalBlocked = filteredAndSorted.filter((e: any) => e.actionTaken === 'BLOCKED').length;
+  const totalWarning  = filteredAndSorted.filter((e: any) => e.actionTaken === 'WARNING').length;
   const avgRisk = filteredAndSorted.length > 0
-    ? Math.round(filteredAndSorted.reduce((sum, e) => sum + e.riskScore, 0) / filteredAndSorted.length)
+    ? Math.round(filteredAndSorted.reduce((sum: number, e: any) => sum + e.riskScore, 0) / filteredAndSorted.length)
     : 0;
 
   return (

@@ -1,10 +1,10 @@
 import React from 'react';
-import { useProtectionConfig } from '../../../hooks/useDashboardData';
+import { useSettings } from '../../../hooks/useSettings';
 import { Shield, ShieldCheck, FileSearch, FormInput, MonitorSmartphone, RefreshCcw, Loader2 } from 'lucide-react';
 import { cn } from '../../../utils/cn';
 
 export function ProtectionStatus() {
-  const { data: config, isLoading } = useProtectionConfig();
+  const { data: config, isLoading } = useSettings();
 
   if (isLoading || !config) {
     return (

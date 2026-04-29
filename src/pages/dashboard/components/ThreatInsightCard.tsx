@@ -1,9 +1,9 @@
 import React from 'react';
-import { useSystemInsight } from '../../../hooks/useDashboardData';
+import { useDashboardData } from '../../../hooks/useDashboardData';
 import { ShieldCheck, Lightbulb, TrendingUp, AlertTriangle, Loader2 } from 'lucide-react';
 
 export function ThreatInsightCard() {
-  const { data: insight, isLoading } = useSystemInsight();
+  const { riskLevel: insight, summary, isLoading } = useDashboardData();
 
   return (
     <div className="col-span-1 bg-white rounded-2xl border border-slate-100 p-6 flex flex-col h-full bg-gradient-to-b from-white to-slate-50/50">
@@ -56,12 +56,12 @@ export function ThreatInsightCard() {
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Total Prevented</p>
                 <p className="text-2xl font-black text-emerald-600 tracking-tight flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5" />
-                  {insight.preventedIncidents.toLocaleString()}
+                  {summary?.totalThreatsBlocked?.toLocaleString() || 0}
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Risk Score</p>
-                <p className="text-2xl font-black text-slate-900 tracking-tight">{insight.weeklyRiskScore}</p>
+                <p className="text-2xl font-black text-slate-900 tracking-tight">{insight.averageRiskScore}</p>
               </div>
             </div>
           </div>

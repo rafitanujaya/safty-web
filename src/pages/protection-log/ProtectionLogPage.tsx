@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { DashboardLayout } from '../../components/organisms/DashboardLayout';
-import { useInitialActivities } from '../../hooks/useDashboardData';
+import { useEvents } from '../../hooks/useEvents';
 import { AlertTriangle, Shield, MousePointerClick, FileWarning, Loader2, ArrowUpDown, Filter, RefreshCcw } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import type { ActivityEvent, SeverityLevel } from '../../api/mockData';
 
 export function ProtectionLogPage() {
-  const { data: initialData, isLoading } = useInitialActivities();
-  const [activities, setActivities] = useState<ActivityEvent[]>([]);
+  const { data, isLoading } = useEvents({ limit: 50 });
+  const initialData = data?.items || [];
+  const [activities, setActivities] = useState<any[]>([]);
   const [filterSeverity, setFilterSeverity] = useState<SeverityLevel | 'ALL'>('ALL');
   const [isLive, setIsLive] = useState(true);
 
@@ -21,28 +22,28 @@ export function ProtectionLogPage() {
   useEffect(() => {
     if (!initialData || !isLive) return;
 
-    const liveEvents: Partial<ActivityEvent>[] = [
-      { event_type: 'BACKGROUND_SCAN', action_taken: 'LOGGED', domain: 'google.com', severity: 'LOW' },
-      { event_type: 'PHISHING_PREVENTED', action_taken: 'BLOCKED', domain: 'login-amazon-update.com', severity: 'HIGH' },
-      { event_type: 'TRACKER_BLOCKED', action_taken: 'BLOCKED', domain: 'free-robux-gen.net', severity: 'MEDIUM' },
-      { event_type: 'DOWNLOAD_BLOCKED', action_taken: 'BLOCKED', domain: 'invoice_2024.exe.zip', severity: 'HIGH' },
-      { event_type: 'BACKGROUND_SCAN', action_taken: 'LOGGED', domain: 'tailwindcss.com', severity: 'LOW' },
-      { event_type: 'REDIRECT_BLOCKED', action_taken: 'BLOCKED', domain: 'suspicious-redirect.xyz', severity: 'MEDIUM' },
-      { event_type: 'PHISHING_PREVENTED', action_taken: 'BLOCKED', domain: 'verify-paypal-account.info', severity: 'CRITICAL' },
-      { event_type: 'FORM_BLOCKED', action_taken: 'WARNING', domain: 'fake-survey-site.com', severity: 'LOW' },
-      { event_type: 'SUSPICIOUS_INTERACTION', action_taken: 'WARNING', domain: 'crypto-pump-signal.io', severity: 'MEDIUM' },
-      { event_type: 'DOWNLOAD_BLOCKED', action_taken: 'BLOCKED', domain: 'free-antivirus-pro.exe', severity: 'HIGH' },
+    const liveEvents: any[] = [
+      { eventType: 'BACKGROUND_SCAN', actionTaken: 'LOGGED', domain: 'google.com', riskLevel: 'LOW' },
+      { eventType: 'PHISHING_PREVENTED', actionTaken: 'BLOCKED', domain: 'login-amazon-update.com', riskLevel: 'HIGH' },
+      { eventType: 'TRACKER_BLOCKED', actionTaken: 'BLOCKED', domain: 'free-robux-gen.net', riskLevel: 'MEDIUM' },
+      { eventType: 'DOWNLOAD_BLOCKED', actionTaken: 'BLOCKED', domain: 'invoice_2024.exe.zip', riskLevel: 'HIGH' },
+      { eventType: 'BACKGROUND_SCAN', actionTaken: 'LOGGED', domain: 'tailwindcss.com', riskLevel: 'LOW' },
+      { eventType: 'REDIRECT_BLOCKED', actionTaken: 'BLOCKED', domain: 'suspicious-redirect.xyz', riskLevel: 'MEDIUM' },
+      { eventType: 'PHISHING_PREVENTED', actionTaken: 'BLOCKED', domain: 'verify-paypal-account.info', riskLevel: 'CRITICAL' },
+      { eventType: 'FORM_BLOCKED', actionTaken: 'WARNING', domain: 'fake-survey-site.com', riskLevel: 'LOW' },
+      { eventType: 'SUSPICIOUS_INTERACTION', actionTaken: 'WARNING', domain: 'crypto-pump-signal.io', riskLevel: 'MEDIUM' },
+      { eventType: 'DOWNLOAD_BLOCKED', actionTaken: 'BLOCKED', domain: 'free-antivirus-pro.exe', riskLevel: 'HIGH' },
     ];
 
     const streamInterval = setInterval(() => {
       const randomEvent = liveEvents[Math.floor(Math.random() * liveEvents.length)];
-      const newEvent: ActivityEvent = {
+      const newEvent = {
         id: Math.random().toString(36).substring(7),
-        event_type: randomEvent.event_type as ActivityEvent['event_type'],
-        action_taken: randomEvent.action_taken as ActivityEvent['action_taken'],
-        domain: randomEvent.domain!,
-        severity: randomEvent.severity as ActivityEvent['severity'],
-        detected_at: new Date().toISOString(),
+        eventType: randomEvent.eventType,
+        actionTaken: randomEvent.actionTaken,
+        domain: randomEvent.domain,
+        riskLevel: randomEvent.riskLevel,
+        createdAt: new Date().toISOString(),
       };
       setActivities(prev => [newEvent, ...prev].slice(0, 50));
     }, 3500);
@@ -92,14 +93,14 @@ export function ProtectionLogPage() {
 
   const filteredActivities = filterSeverity === 'ALL'
     ? activities
-    : activities.filter(a => a.severity === filterSeverity);
+    : activities.filter(a => a.riskLevel === filterSeverity);
 
   const severityCounts = {
     ALL: activities.length,
-    CRITICAL: activities.filter(a => a.severity === 'CRITICAL').length,
-    HIGH: activities.filter(a => a.severity === 'HIGH').length,
-    MEDIUM: activities.filter(a => a.severity === 'MEDIUM').length,
-    LOW: activities.filter(a => a.severity === 'LOW').length,
+    CRITICAL: activities.filter(a => a.riskLevel === 'CRITICAL').length,
+    HIGH: activities.filter(a => a.riskLevel === 'HIGH').length,
+    MEDIUM: activities.filter(a => a.riskLevel === 'MEDIUM').length,
+    LOW: activities.filter(a => a.riskLevel === 'LOW').length,
   };
 
   return (
@@ -171,21 +172,21 @@ export function ProtectionLogPage() {
                     style={i === 0 && isLive ? { animation: 'slideIn 0.4s ease-out' } : undefined}
                   >
                     {/* Icon */}
-                    <div className={cn('p-2.5 rounded-xl shrink-0', getEventIconColor(activity.event_type))}>
-                      {getEventIcon(activity.event_type)}
+                    <div className={cn('p-2.5 rounded-xl shrink-0', getEventIconColor(activity.eventType || ''))}>
+                      {getEventIcon(activity.eventType || '')}
                     </div>
 
                     {/* Event Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-sm font-bold text-slate-800">{formatEventType(activity.event_type)}</span>
+                        <span className="text-sm font-bold text-slate-800">{formatEventType(activity.eventType || '')}</span>
                         <span className={cn(
                           'text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider border',
-                          activity.action_taken === 'BLOCKED' ? 'bg-red-50 text-red-600 border-red-100' :
-                            activity.action_taken === 'WARNING' ? 'bg-amber-50 text-amber-600 border-amber-100' :
+                          activity.actionTaken === 'BLOCKED' ? 'bg-red-50 text-red-600 border-red-100' :
+                            activity.actionTaken === 'WARNING' ? 'bg-amber-50 text-amber-600 border-amber-100' :
                               'bg-slate-100 text-slate-500 border-slate-200'
                         )}>
-                          {activity.action_taken}
+                          {activity.actionTaken}
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 font-mono truncate">{activity.domain}</p>
@@ -194,15 +195,15 @@ export function ProtectionLogPage() {
                     {/* Severity */}
                     <span className={cn(
                       'text-[11px] font-bold px-2.5 py-1 rounded-md border hidden sm:inline-flex',
-                      getSeverityStyles(activity.severity)
+                      getSeverityStyles(activity.riskLevel || '')
                     )}>
-                      {activity.severity}
+                      {activity.riskLevel}
                     </span>
 
                     {/* Timestamp */}
                     <div className="text-right shrink-0">
-                      <span className="text-xs font-semibold text-slate-600 block">{formatTime(activity.detected_at)}</span>
-                      <span className="text-[11px] text-slate-400">{formatDate(activity.detected_at)}</span>
+                      <span className="text-xs font-semibold text-slate-600 block">{formatTime(activity.createdAt)}</span>
+                      <span className="text-[11px] text-slate-400">{formatDate(activity.createdAt)}</span>
                     </div>
                   </div>
                 ))}

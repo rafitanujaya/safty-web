@@ -1,12 +1,12 @@
 import React from 'react';
-import { useSystemInsight } from '../../../hooks/useDashboardData';
+import { useDashboardData } from '../../../hooks/useDashboardData';
 import { Loader2 } from 'lucide-react';
 import { cn } from '../../../utils/cn';
 
 export function RiskLevelGauge() {
-  const { data: insight, isLoading } = useSystemInsight();
+  const { riskLevel: insight, isLoading } = useDashboardData();
 
-  const riskScore = insight?.weeklyRiskScore ?? 0;
+  const riskScore = insight?.averageRiskScore ?? 0;
 
   const getRiskLevel = (score: number) => {
     if (score <= 20) return { label: 'Very Low', color: '#10b981', bgColor: 'bg-emerald-50', textColor: 'text-emerald-600' };
@@ -107,7 +107,7 @@ export function RiskLevelGauge() {
       </div>
 
       <p className="text-xs text-slate-500 text-center mt-2 leading-relaxed">
-        {insight?.trendInsight || 'Calculating your risk score...'}
+        {insight ? `Your current risk level is ${insight.riskLevel}` : 'Calculating your risk score...'}
       </p>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { DashboardLayout } from '../../components/organisms/DashboardLayout';
+import { useScanImage } from '../../hooks/useImages';
 import { cn } from '../../utils/cn';
 import {
   Upload, Image as ImageIcon, AlertTriangle, CheckCircle2, XCircle,
@@ -26,33 +27,6 @@ interface HistoryEntry {
   confidence: number;
 }
 
-/* ── simulate analysis ────────────────────────────────── */
-function simulateAnalysis(dataUrl: string): Promise<AnalysisResult> {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const rand = Math.random();
-      let verdict: Verdict; let confidence: number; let insights: string[];
-      let highlights: AnalysisResult['highlights'] = [];
-
-      if (rand < 0.33) {
-        verdict = 'SCAM'; confidence = Math.floor(Math.random() * 15) + 82;
-        insights = ['Fake login UI detected', 'Suspicious brand impersonation', 'Edited or manipulated content'];
-        highlights = [{ label: 'Fake form', x: 15, y: 20, w: 70, h: 40 }, { label: 'Logo spoof', x: 10, y: 5, w: 30, h: 12 }];
-      } else if (rand < 0.6) {
-        verdict = 'SUSPICIOUS'; confidence = Math.floor(Math.random() * 20) + 55;
-        insights = ['Fake verification message detected', 'Unusual UI layout pattern'];
-        highlights = [{ label: 'Suspicious text', x: 20, y: 55, w: 60, h: 20 }];
-      } else {
-        verdict = 'SAFE'; confidence = Math.floor(Math.random() * 15) + 80;
-        insights = ['No manipulated content detected', 'No known scam patterns found'];
-        highlights = [];
-      }
-
-      const riskLevel: RiskLevel = verdict === 'SCAM' ? 'HIGH' : verdict === 'SUSPICIOUS' ? 'MEDIUM' : 'LOW';
-      resolve({ riskLevel, confidence, verdict, insights, highlights });
-    }, 2500);
-  });
-}
 
 const VERDICT_CFG = {
   SAFE:       { label: 'Safe',       color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200', bar: 'bg-emerald-500', icon: CheckCircle2 },
@@ -310,6 +284,7 @@ export function ImageForensicPage() {
   const [dataUrl, setDataUrl]   = useState<string | null>(null);
   const [result, setResult]     = useState<AnalysisResult | null>(null);
   const [history, setHistory]   = useState<HistoryEntry[]>([]);
+  const { mutateAsync: scanImageMutation } = useScanImage();
 
   const handleImage = async (url: string, _file: File) => {
     setDataUrl(url); setResult(null);
@@ -319,10 +294,15 @@ export function ImageForensicPage() {
       setProgress(p);
     }
     setState('analyzing');
-    const res = await simulateAnalysis(url);
-    setResult(res);
-    setState('result');
-    setHistory(prev => [{ id: Date.now().toString(), preview: url, verdict: res.verdict, confidence: res.confidence }, ...prev.slice(0, 4)]);
+    try {
+      const res = await scanImageMutation(_file);
+      setResult(res);
+      setState('result');
+      setHistory(prev => [{ id: Date.now().toString(), preview: url, verdict: res.verdict as Verdict, confidence: res.confidence }, ...prev.slice(0, 4)]);
+    } catch (e) {
+      console.error(e);
+      setState('idle');
+    }
   };
 
   const handleReset = () => { setState('idle'); setDataUrl(null); setResult(null); setProgress(0); };

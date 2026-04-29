@@ -10,7 +10,6 @@ export const useAuth = () => {
   const queryClient = useQueryClient();
   const { token, setAuth, clearAuth } = useAuthStore();
 
-  // Query untuk mendapatkan data user saat ini
   const useMe = (customToken?: string) => {
     const activeToken = customToken || token;
     return useQuery({
@@ -20,13 +19,11 @@ export const useAuth = () => {
     });
   };
 
-  // Mutation untuk login
   const useLogin = () => {
     return useMutation({
       mutationFn: (data: LoginData) => authService.login(data),
       onSuccess: (data: any) => {
-        // Asumsi response login mengembalikan { token, user }
-        // Sesuaikan dengan struktur response API yang sebenarnya
+        // data is already unwrapped (no .data.data) due to fetchApi changes
         if (data?.token) {
           setAuth(data.token, data.user);
         }
@@ -35,12 +32,10 @@ export const useAuth = () => {
     });
   };
 
-  // Mutation untuk register
   const useRegister = () => {
     return useMutation({
       mutationFn: (data: RegisterData) => authService.register(data),
       onSuccess: (data: any) => {
-        // Jika register langsung auto-login, bisa diset juga tokennya di sini
          if (data?.token) {
           setAuth(data.token, data.user);
         }
@@ -49,7 +44,6 @@ export const useAuth = () => {
     });
   };
 
-  // Logout
   const logout = () => {
     clearAuth();
     queryClient.setQueryData(AUTH_KEYS.me, null);
@@ -61,7 +55,6 @@ export const useAuth = () => {
     useLogin,
     useRegister,
     logout,
-    token, // expose token just in case
+    token,
   };
 };
-

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../../components/organisms/DashboardLayout';
-import { useProtectionConfig } from '../../hooks/useDashboardData';
+import { useSettings, useUpdateSettings } from '../../hooks/useSettings';
 import {
   Loader2,
   Shield,
@@ -19,8 +19,9 @@ import { cn } from '../../utils/cn';
 import type { ProtectionConfig } from '../../api/mockData';
 
 export function SettingsPage() {
-  const { data: config, isLoading } = useProtectionConfig();
-  const [localConfig, setLocalConfig] = useState<ProtectionConfig | null>(null);
+  const { data: config, isLoading } = useSettings();
+  const { mutate: updateConfigMutation } = useUpdateSettings();
+  const [localConfig, setLocalConfig] = useState<any>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -44,10 +45,13 @@ export function SettingsPage() {
   };
 
   const handleSave = () => {
-    // Simulate save
-    setIsSaved(true);
-    setHasChanges(false);
-    setTimeout(() => setIsSaved(false), 3000);
+    updateConfigMutation(localConfig, {
+      onSuccess: () => {
+        setIsSaved(true);
+        setHasChanges(false);
+        setTimeout(() => setIsSaved(false), 3000);
+      }
+    });
   };
 
   if (isLoading || !localConfig) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DashboardLayout } from '../../components/organisms/DashboardLayout';
-import { useEducationArticles } from '../../hooks/useDashboardData';
+import { useEducation } from '../../hooks/useEducation';
 import { Loader2, BookOpen, Shield, AlertTriangle, Download, Eye, Lock, ArrowRight, Search } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import type { EducationArticle } from '../../api/mockData';
@@ -28,7 +28,7 @@ const difficultyColors: Record<string, string> = {
 };
 
 export function EducationPage() {
-  const { data: articles, isLoading } = useEducationArticles();
+  const { data: articles, isLoading } = useEducation();
   const [filterCategory, setFilterCategory] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 

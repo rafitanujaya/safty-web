@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDangerousFiles } from '../../../hooks/useDashboardData';
+import { useFiles } from '../../../hooks/useFiles';
 import { FileWarning, FileArchive, FileCode, FileText, File, Loader2 } from 'lucide-react';
 import { cn } from '../../../utils/cn';
 import type { FileType } from '../../../api/mockData';
@@ -29,7 +29,8 @@ const fileTypeColors: Record<FileType, string> = {
 };
 
 export function DangerousFilesList() {
-  const { data: files, isLoading } = useDangerousFiles();
+  const { data, isLoading } = useFiles();
+  const files = data?.items || [];
 
   const getRiskColor = (score: number) => {
     if (score >= 80) return 'text-red-600 bg-red-50 border-red-100';
@@ -114,15 +115,15 @@ export function DangerousFilesList() {
                     <td className="px-6 py-3.5">
                       <span className={cn(
                         'text-[11px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider border',
-                        file.action_taken === 'BLOCKED'
+                        file.actionTaken === 'BLOCKED'
                           ? 'text-red-600 bg-red-50 border-red-100'
                           : 'text-amber-600 bg-amber-50 border-amber-100'
                       )}>
-                        {file.action_taken}
+                        {file.actionTaken}
                       </span>
                     </td>
                     <td className="px-6 py-3.5">
-                      <span className="text-xs text-slate-400 font-medium">{formatTime(file.detected_at)}</span>
+                      <span className="text-xs text-slate-400 font-medium">{formatTime(file.createdAt)}</span>
                     </td>
                   </tr>
                 );

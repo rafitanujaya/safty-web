@@ -1,9 +1,9 @@
 import React from 'react';
-import { useTopFlaggedWebsites } from '../../../hooks/useDashboardData';
+import { useTopThreatSources } from '../../../hooks/useDashboardData';
 import { Loader2, ShieldAlert } from 'lucide-react';
 
 export function TopThreatSources() {
-  const { data: topWebsites, isLoading } = useTopFlaggedWebsites();
+  const { data: topWebsites, isLoading } = useTopThreatSources();
 
   return (
     <div className="bg-white rounded-2xl border border-slate-100 p-6 flex flex-col h-full">
@@ -41,7 +41,7 @@ export function TopThreatSources() {
                 <span className="text-xs font-bold text-slate-400 w-5 text-center">{index + 1}</span>
                 <div>
                   <p className="text-sm font-semibold text-slate-700 truncate max-w-[200px]">{site.domain}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{site.total_intercepts} intercepts</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{site.totalIntercepts} intercepts</p>
                 </div>
               </div>
               <div className="flex flex-col items-end">
