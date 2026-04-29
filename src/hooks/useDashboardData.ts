@@ -1,79 +1,67 @@
 import { useQuery } from '@tanstack/react-query';
 import { dashboardService } from '../services/dashboardService';
+import { threatSourceService } from '../services/threatSourceService';
 
-export const useOverviewStats = () => {
-  return useQuery({
-    queryKey: ['dashboard', 'overview'],
-    queryFn: dashboardService.getOverviewStats,
-  });
+export const DASHBOARD_KEYS = {
+  all: ['dashboard'] as const,
+  summary: (days: number) => [...DASHBOARD_KEYS.all, 'summary', days] as const,
+  trend: (days: number) => [...DASHBOARD_KEYS.all, 'trend', days] as const,
+  severity: (days: number) => [...DASHBOARD_KEYS.all, 'severity', days] as const,
+  recentEvents: (limit: number) => [...DASHBOARD_KEYS.all, 'recentEvents', limit] as const,
+  riskLevel: (days: number) => [...DASHBOARD_KEYS.all, 'riskLevel', days] as const,
+  threatSources: (limit: number) => [...DASHBOARD_KEYS.all, 'threatSources', limit] as const,
 };
 
-export const useTrendData = () => {
-  return useQuery({
-    queryKey: ['dashboard', 'trends'],
-    queryFn: dashboardService.getTrendData,
+export const useDashboardData = (days = 7) => {
+  const summaryQuery = useQuery({
+    queryKey: DASHBOARD_KEYS.summary(days),
+    queryFn: () => dashboardService.getSummary(days),
   });
+
+  const trendQuery = useQuery({
+    queryKey: DASHBOARD_KEYS.trend(days),
+    queryFn: () => dashboardService.getTrend(days),
+  });
+
+  const severityQuery = useQuery({
+    queryKey: DASHBOARD_KEYS.severity(days),
+    queryFn: () => dashboardService.getSeverity(days),
+  });
+
+  const recentEventsQuery = useQuery({
+    queryKey: DASHBOARD_KEYS.recentEvents(10),
+    queryFn: () => dashboardService.getRecentEvents(10),
+  });
+
+  const riskLevelQuery = useQuery({
+    queryKey: DASHBOARD_KEYS.riskLevel(days),
+    queryFn: () => dashboardService.getRiskLevel(days),
+  });
+
+  return {
+    summary: summaryQuery.data,
+    trend: trendQuery.data,
+    severity: severityQuery.data,
+    recentEvents: recentEventsQuery.data,
+    riskLevel: riskLevelQuery.data,
+    isLoading: 
+      summaryQuery.isLoading || 
+      trendQuery.isLoading || 
+      severityQuery.isLoading || 
+      recentEventsQuery.isLoading || 
+      riskLevelQuery.isLoading,
+    isError: 
+      summaryQuery.isError || 
+      trendQuery.isError || 
+      severityQuery.isError || 
+      recentEventsQuery.isError || 
+      riskLevelQuery.isError,
+  };
 };
 
-export const useCategoryData = () => {
+export const useTopThreatSources = (limit = 5) => {
   return useQuery({
-    queryKey: ['dashboard', 'categories'],
-    queryFn: dashboardService.getCategoryData,
-  });
-};
-
-export const useRecentDetections = () => {
-  return useQuery({
-    queryKey: ['dashboard', 'detections'],
-    queryFn: dashboardService.getRecentDetections,
-  });
-};
-
-export const useTopFlaggedWebsites = () => {
-  return useQuery({
-    queryKey: ['dashboard', 'topFlagged'],
-    queryFn: dashboardService.getTopFlaggedWebsites,
-  });
-};
-
-export const useSystemInsight = () => {
-  return useQuery({
-    queryKey: ['dashboard', 'insight'],
-    queryFn: dashboardService.getSystemInsight,
-  });
-};
-
-export const useInitialActivities = () => {
-  return useQuery({
-    queryKey: ['dashboard', 'activities'],
-    queryFn: dashboardService.getInitialActivities,
-  });
-};
-
-export const useDangerousFiles = () => {
-  return useQuery({
-    queryKey: ['dashboard', 'dangerousFiles'],
-    queryFn: dashboardService.getDangerousFiles,
-  });
-};
-
-export const useEducationArticles = () => {
-  return useQuery({
-    queryKey: ['education', 'articles'],
-    queryFn: dashboardService.getEducationArticles,
-  });
-};
-
-export const useProtectionConfig = () => {
-  return useQuery({
-    queryKey: ['settings', 'config'],
-    queryFn: dashboardService.getProtectionConfig,
-  });
-};
-
-export const useThreatHistory = () => {
-  return useQuery({
-    queryKey: ['history', 'threats'],
-    queryFn: dashboardService.getThreatHistory,
+    queryKey: DASHBOARD_KEYS.threatSources(limit),
+    queryFn: () => threatSourceService.getTopSources(limit),
   });
 };

@@ -1,100 +1,23 @@
-import {
-  initialMockActivities,
-  mockCategoryData,
-  mockDetections,
-  mockOverviewStats,
-  mockTopFlagged,
-  mockTrendData,
-  mockUserInsight,
-  mockDangerousFiles,
-  mockEducationArticles,
-  mockProtectionConfig,
-  mockThreatHistory,
-  type ActivityEvent,
-  type CategoryData,
-  type Detection,
-  type FlaggedWebsite,
-  type OverviewStats,
-  type TrendDataPoint,
-  type SystemInsight,
-  type DangerousFile,
-  type EducationArticle,
-  type ProtectionConfig,
-  type ThreatHistoryEntry,
-} from "../api/mockData";
 import { fetchApi } from '../api/api';
 
-
-// Helper to simulate network latency
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export const dashboardService = {
-  getOverviewStats: async (): Promise<OverviewStats> => {
-    await delay(600);
-    return mockOverviewStats;
+  getSummary: (days: number = 7) => {
+    return fetchApi<any>(`dashboard/summary?days=${days}`, { method: 'GET' });
   },
 
-  getTrendData: async (): Promise<TrendDataPoint[]> => {
-    await delay(800);
-    return mockTrendData;
+  getTrend: (days: number = 7) => {
+    return fetchApi<any>(`dashboard/trend?days=${days}`, { method: 'GET' });
   },
 
-  getCategoryData: async (): Promise<CategoryData[]> => {
-    await delay(700);
-    return mockCategoryData;
+  getSeverity: (days: number = 7) => {
+    return fetchApi<any>(`dashboard/severity?days=${days}`, { method: 'GET' });
   },
 
-  getRecentDetections: async (): Promise<Detection[]> => {
-    await delay(1000);
-    return mockDetections;
+  getRecentEvents: (limit: number = 10) => {
+    return fetchApi<any>(`dashboard/recent-events?limit=${limit}`, { method: 'GET' });
   },
 
-  getTopFlaggedWebsites: async (): Promise<FlaggedWebsite[]> => {
-    await delay(900);
-    return mockTopFlagged;
-  },
-
-  getSystemInsight: async (): Promise<SystemInsight> => {
-    await delay(500);
-    return mockUserInsight;
-  },
-
-  getInitialActivities: async (): Promise<ActivityEvent[]> => {
-    await delay(400);
-    return initialMockActivities;
-  },
-
-  getDangerousFiles: async (): Promise<DangerousFile[]> => {
-    await delay(700);
-    return mockDangerousFiles;
-  },
-
-  getEducationArticles: async (): Promise<EducationArticle[]> => {
-    await delay(500);
-    return mockEducationArticles;
-  },
-
-  getProtectionConfig: async (): Promise<ProtectionConfig> => {
-    await delay(400);
-    return mockProtectionConfig;
-  },
-
-  updateProtectionConfig: async (config: Partial<ProtectionConfig>): Promise<ProtectionConfig> => {
-    await delay(300);
-    return { ...mockProtectionConfig, ...config };
-  },
-
-  getThreatHistory: async (): Promise<ThreatHistoryEntry[]> => {
-    await delay(800);
-    return mockThreatHistory;
-  },
-
-  // Real API endpoints from SAFTY-BE
-  getSummaryApi: () => {
-    return fetchApi('dashboard/summary', { method: 'GET' });
-  },
-
-  getRecentEventsApi: () => {
-    return fetchApi('dashboard/events', { method: 'GET' });
+  getRiskLevel: (days: number = 7) => {
+    return fetchApi<any>(`dashboard/risk-level?days=${days}`, { method: 'GET' });
   }
 };

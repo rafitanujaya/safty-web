@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOverviewStats } from '../../../hooks/useDashboardData';
+import { useDashboardData } from '../../../hooks/useDashboardData';
 import { ShieldCheck, ShieldAlert, AlertTriangle, AlertCircle, TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '../../../utils/cn';
 
@@ -153,7 +153,7 @@ function StatCard({ item, featured = false }: { item: CardConfig; featured?: boo
 
 /* ── main export ───────────────────────────────────────── */
 export function OverviewCards() {
-  const { data: stats, isLoading } = useOverviewStats();
+  const { summary: stats, isLoading } = useDashboardData();
 
   if (isLoading || !stats) {
     return (

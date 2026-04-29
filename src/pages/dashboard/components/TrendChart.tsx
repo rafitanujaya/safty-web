@@ -1,11 +1,10 @@
 import React from 'react';
-import { useTrendData, useOverviewStats } from '../../../hooks/useDashboardData';
+import { useDashboardData } from '../../../hooks/useDashboardData';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Loader2, TrendingUp } from 'lucide-react';
 
 export function TrendChart() {
-  const { data: trendData, isLoading } = useTrendData();
-  const { data: stats } = useOverviewStats();
+  const { trend: trendData, summary: stats, isLoading } = useDashboardData();
 
   return (
     <div className="col-span-1 lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-6 flex flex-col min-h-[380px]">

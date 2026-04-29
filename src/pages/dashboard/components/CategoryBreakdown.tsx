@@ -1,12 +1,25 @@
 import React from 'react';
-import { useCategoryData } from '../../../hooks/useDashboardData';
+import { useDashboardData } from '../../../hooks/useDashboardData';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { Loader2 } from 'lucide-react';
 
 export function CategoryBreakdown() {
-  const { data: categoryData, isLoading } = useCategoryData();
+  const { severity, isLoading } = useDashboardData();
 
-  const total = categoryData?.reduce((acc, curr) => acc + curr.value, 0) || 1;
+  const colors: Record<string, string> = {
+    CRITICAL: '#ef4444',
+    HIGH: '#f97316',
+    MEDIUM: '#eab308',
+    LOW: '#3b82f6',
+    SAFE: '#10b981'
+  };
+
+  const categoryData = severity?.map((s: any) => ({
+    ...s,
+    color: colors[s.name] || '#94a3b8'
+  })) || [];
+
+  const total = categoryData.reduce((acc: number, curr: any) => acc + curr.value, 0) || 1;
 
   return (
     <div className="bg-white rounded-2xl border border-slate-100 p-6 flex flex-col min-h-[380px]">
@@ -52,7 +65,7 @@ export function CategoryBreakdown() {
             {/* Center text */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-3xl font-bold text-slate-900">
-                {categoryData.find(c => c.name === 'HIGH')?.value || categoryData[1]?.value}%
+                {categoryData.find((c: any) => c.name === 'HIGH')?.value || 0}%
               </span>
               <span className="text-xs text-slate-400 font-medium">High/Critical</span>
             </div>
@@ -60,13 +73,13 @@ export function CategoryBreakdown() {
         )}
       </div>
 
-      {!isLoading && categoryData && (
+      {!isLoading && severity && (
         <div className="mt-4">
            <div className="grid grid-cols-2 gap-2 text-xs font-medium">
-             {categoryData.map((category) => (
+              {categoryData.map((category: any) => (
                 <div key={category.name} className="flex items-center gap-2">
                    <div className="w-2.5 h-2.5 rounded bg-slate-200" style={{ backgroundColor: category.color }} />
-                   <span className="text-slate-600">{category.name} ({category.value}%)</span>
+                   <span className="text-slate-600">{category.name} ({Math.round((category.value / total) * 100)}%)</span>
                 </div>
              ))}
            </div>

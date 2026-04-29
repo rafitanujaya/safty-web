@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useInitialActivities } from '../../../hooks/useDashboardData';
+import { useDashboardData } from '../../../hooks/useDashboardData';
 import { AlertTriangle, Shield, MousePointerClick, FileWarning, Loader2 } from 'lucide-react';
 import { cn } from '../../../utils/cn';
 import type { ActivityEvent } from '../../../api/mockData';
 
 export function ActivityLog() {
-  const { data: initialData, isLoading } = useInitialActivities();
-  const [activities, setActivities] = useState<ActivityEvent[]>([]);
+  const { recentEvents: initialData, isLoading } = useDashboardData();
+  const [activities, setActivities] = useState<any[]>([]);
 
   useEffect(() => {
     if (initialData) {
@@ -18,22 +18,22 @@ export function ActivityLog() {
     if (!initialData) return;
 
     const streamInterval = setInterval(() => {
-      const liveEvents: Partial<ActivityEvent>[] = [
-        { event_type: 'BACKGROUND_SCAN', action_taken: 'LOGGED', domain: 'google.com', severity: 'LOW' },
-        { event_type: 'PHISHING_PREVENTED', action_taken: 'BLOCKED', domain: 'login-amazon-update.com', severity: 'HIGH' },
-        { event_type: 'TRACKER_BLOCKED', action_taken: 'BLOCKED', domain: 'free-robux-gen.net', severity: 'MEDIUM' },
-        { event_type: 'DOWNLOAD_BLOCKED', action_taken: 'BLOCKED', domain: 'invoice_2024.exe.zip', severity: 'HIGH' },
-        { event_type: 'BACKGROUND_SCAN', action_taken: 'LOGGED', domain: 'tailwindcss.com', severity: 'LOW' },
+      const liveEvents: any[] = [
+        { eventType: 'BACKGROUND_SCAN', actionTaken: 'LOGGED', domain: 'google.com', riskLevel: 'LOW' },
+        { eventType: 'PHISHING_PREVENTED', actionTaken: 'BLOCKED', domain: 'login-amazon-update.com', riskLevel: 'HIGH' },
+        { eventType: 'TRACKER_BLOCKED', actionTaken: 'BLOCKED', domain: 'free-robux-gen.net', riskLevel: 'MEDIUM' },
+        { eventType: 'DOWNLOAD_BLOCKED', actionTaken: 'BLOCKED', domain: 'invoice_2024.exe.zip', riskLevel: 'HIGH' },
+        { eventType: 'BACKGROUND_SCAN', actionTaken: 'LOGGED', domain: 'tailwindcss.com', riskLevel: 'LOW' },
       ];
 
       const randomEvent = liveEvents[Math.floor(Math.random() * liveEvents.length)];
-      const newEvent: ActivityEvent = {
+      const newEvent = {
         id: Math.random().toString(),
-        event_type: randomEvent.event_type as ActivityEvent['event_type'],
-        action_taken: randomEvent.action_taken as ActivityEvent['action_taken'],
-        domain: randomEvent.domain!,
-        severity: randomEvent.severity as ActivityEvent['severity'],
-        detected_at: new Date().toISOString(),
+        eventType: randomEvent.eventType,
+        actionTaken: randomEvent.actionTaken,
+        domain: randomEvent.domain,
+        riskLevel: randomEvent.riskLevel,
+        createdAt: new Date().toISOString(),
       };
 
       // Add simple pulse effect hint
@@ -96,24 +96,24 @@ export function ActivityLog() {
                 )}
                 style={i === 0 ? { animation: 'slideRight 0.5s ease-out' } : undefined}
               >
-                <div className={cn('w-2 h-2 rounded-full shrink-0', getSeverityDot(activity.severity))} />
+                <div className={cn('w-2 h-2 rounded-full shrink-0', getSeverityDot(activity.riskLevel))} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    {getEventIcon(activity.event_type)}
-                    <span className="text-xs font-bold text-slate-700 truncate">{formatEventType(activity.event_type)}</span>
+                    {getEventIcon(activity.eventType || '')}
+                    <span className="text-xs font-bold text-slate-700 truncate">{formatEventType(activity.eventType || '')}</span>
                     <span className={cn(
                       "text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider",
-                      activity.action_taken === 'BLOCKED' ? 'bg-red-50 text-red-600 border border-red-100' :
-                        activity.action_taken === 'WARNING' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                      activity.actionTaken === 'BLOCKED' ? 'bg-red-50 text-red-600 border border-red-100' :
+                        activity.actionTaken === 'WARNING' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
                           'bg-slate-100 text-slate-500 border border-slate-200'
                     )}>
-                      {activity.action_taken}
+                      {activity.actionTaken}
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 font-mono truncate">{activity.domain}</p>
                 </div>
                 <span className="text-[11px] text-slate-400 font-semibold whitespace-nowrap bg-white px-2 py-1 rounded shadow-sm border border-slate-100">
-                  {new Date(activity.detected_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                  {new Date(activity.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                 </span>
               </div>
             ))}

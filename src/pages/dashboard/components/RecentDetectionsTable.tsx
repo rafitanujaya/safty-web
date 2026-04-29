@@ -1,11 +1,11 @@
 import React from 'react';
 import { Badge, type BadgeVariant } from '../../../components/atoms/Badge';
-import { useRecentDetections } from '../../../hooks/useDashboardData';
+import { useDashboardData } from '../../../hooks/useDashboardData';
 import { Loader2 } from 'lucide-react';
 import { type SeverityLevel } from '../../../api/mockData';
 
 export function RecentDetectionsTable() {
-  const { data: detections, isLoading } = useRecentDetections();
+  const { recentEvents: detections, isLoading } = useDashboardData();
 
   const getStatusBadge = (status: string): BadgeVariant => {
     switch (status) {
@@ -69,18 +69,18 @@ export function RecentDetectionsTable() {
               detections?.map((d) => (
                 <tr key={d.id} className="hover:bg-slate-50/50 transition-colors">
                   <td className="px-6 py-3.5 text-slate-400 font-mono text-xs whitespace-nowrap">
-                    {new Date(d.detected_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(d.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </td>
                   <td className="px-6 py-3.5">
                     <span className="font-medium text-slate-700 truncate max-w-[200px] block">{d.domain}</span>
                     <span className="text-xs text-slate-400 mt-0.5 block">{d.category}</span>
                   </td>
                   <td className="px-6 py-3.5">
-                    <Badge variant={getStatusBadge(d.action_taken)}>{d.action_taken}</Badge>
+                    <Badge variant={getStatusBadge(d.actionTaken)}>{d.actionTaken}</Badge>
                   </td>
                   <td className="px-6 py-3.5">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${getSeverityColor(d.severity)}`}>
-                      {d.severity}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${getSeverityColor(d.riskLevel)}`}>
+                      {d.riskLevel}
                     </span>
                   </td>
                   <td className="px-6 py-3.5">

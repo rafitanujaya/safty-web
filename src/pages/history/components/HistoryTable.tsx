@@ -7,7 +7,7 @@ type SortField = 'timestamp' | 'riskScore' | 'severity';
 type SortDirection = 'asc' | 'desc';
 
 interface HistoryTableProps {
-  entries: ThreatHistoryEntry[];
+  entries: any[];
   isLoading: boolean;
   sortField: SortField;
   sortDirection: SortDirection;
@@ -96,8 +96,8 @@ export function HistoryTable({ entries, isLoading, sortField, sortDirection, onS
                 </td>
               </tr>
             ) : (
-              entries.map((entry) => {
-                const { time, date } = formatTimestamp(entry.timestamp);
+              entries.map((entry: any) => {
+                const { time, date } = formatTimestamp(entry.createdAt);
                 return (
                   <tr key={entry.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-3.5">
@@ -117,16 +117,16 @@ export function HistoryTable({ entries, isLoading, sortField, sortDirection, onS
                     <td className="px-6 py-3.5">
                       <span className={cn(
                         'text-[11px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider border',
-                        entry.action_taken === 'BLOCKED' ? 'text-red-600 bg-red-50 border-red-100' :
-                        entry.action_taken === 'WARNING' ? 'text-amber-600 bg-amber-50 border-amber-100' :
+                        entry.actionTaken === 'BLOCKED' ? 'text-red-600 bg-red-50 border-red-100' :
+                        entry.actionTaken === 'WARNING' ? 'text-amber-600 bg-amber-50 border-amber-100' :
                         'text-slate-500 bg-slate-50 border-slate-200'
                       )}>
-                        {entry.action_taken}
+                        {entry.actionTaken}
                       </span>
                     </td>
                     <td className="px-6 py-3.5">
-                      <span className={cn('text-[11px] font-bold px-2 py-0.5 rounded-md border', getSeverityColor(entry.severity))}>
-                        {entry.severity}
+                      <span className={cn('text-[11px] font-bold px-2 py-0.5 rounded-md border', getSeverityColor(entry.riskLevel))}>
+                        {entry.riskLevel}
                       </span>
                     </td>
                     <td className="px-6 py-3.5">

@@ -1,37 +1,36 @@
 import { fetchApi } from '../api/api';
 
-export interface RegisterData {
-  email?: string;
+export interface LoginData {
+  email: string;
   password?: string;
-  [key: string]: any;
 }
 
-export interface LoginData {
-  email?: string;
+export interface RegisterData {
+  username?: string;
+  email: string;
   password?: string;
-  [key: string]: any;
 }
 
 export const authService = {
-  register: (data: RegisterData) => {
-    return fetchApi('auth/register', { 
-      method: 'POST', 
-      body: JSON.stringify(data) 
+  login: async (data: LoginData) => {
+    return fetchApi('auth/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
     });
   },
-  
-  login: (data: LoginData) => {
-    return fetchApi('auth/login', { 
-      method: 'POST', 
-      body: JSON.stringify(data) 
+
+  register: async (data: RegisterData) => {
+    return fetchApi('auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
     });
   },
-  
-  getMe: (token?: string) => {
-    const headers: HeadersInit = {};
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    return fetchApi('auth/me', { headers });
-  }
+
+  getMe: async (token?: string) => {
+    // token is now automatically injected by fetchApi via authStore
+    // but if we pass it, we can still use it (though api.ts overrides if authStore has it)
+    return fetchApi('auth/me', {
+      method: 'GET',
+    });
+  },
 };
