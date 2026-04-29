@@ -2,20 +2,31 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { AuthLayout } from './components/AuthLayout';
+import { useAuth } from '../../hooks/useAuth';
 
 export function RegisterPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const { useRegister } = useAuth();
+  const { mutate: register, isPending } = useRegister();
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/dashboard');
-    }, 1500);
+    register(
+      { username, email, password },
+      {
+        onSuccess: () => {
+          navigate('/login');
+        },
+        onError: (err) => {
+          console.error('Register error:', err);
+        }
+      }
+    );
   };
 
   return (
@@ -41,6 +52,8 @@ export function RegisterPage() {
             id="register-name"
             type="text"
             required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your full name"
             className="w-full bg-neutral-50 border border-neutral-200 rounded-xl py-3 px-4 text-h7 text-neutral-900 placeholder-neutral-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
           />
@@ -53,6 +66,8 @@ export function RegisterPage() {
             id="register-email"
             type="email"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             className="w-full bg-neutral-50 border border-neutral-200 rounded-xl py-3 px-4 text-h7 text-neutral-900 placeholder-neutral-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
           />
@@ -85,10 +100,11 @@ export function RegisterPage() {
         <button
           id="register-submit"
           type="submit"
-          disabled={isLoading}
+          disabled={isPending}
           className="w-full flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold rounded-full py-3 text-h7 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Create Account</span>}
+          {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+          <span>{isPending ? 'Sedang daftar...' : 'Create Account'}</span>
         </button>
 
         {/* Google */}

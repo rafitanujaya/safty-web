@@ -2,20 +2,32 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { AuthLayout } from './components/AuthLayout';
+import { useAuth } from '../../hooks/useAuth';
 
 export function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  
+  const { useLogin } = useAuth();
+  const { mutate: login, isPending } = useLogin();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/dashboard');
-    }, 1500);
+    login(
+      { email, password },
+      {
+        onSuccess: () => {
+          navigate('/dashboard');
+        },
+        onError: (err) => {
+          console.error('Login error:', err);
+          // Optional: handle error UI here
+        }
+      }
+    );
   };
 
   return (
@@ -41,6 +53,8 @@ export function LoginPage() {
             id="login-email"
             type="email"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             className="w-full bg-neutral-50 border border-neutral-200 rounded-xl py-3 px-4 text-h7 text-neutral-900 placeholder-neutral-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
           />
@@ -54,6 +68,8 @@ export function LoginPage() {
               id="login-password"
               type={showPassword ? 'text' : 'password'}
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               className="w-full bg-neutral-50 border border-neutral-200 rounded-xl py-3 px-4 pr-11 text-h7 text-neutral-900 placeholder-neutral-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
             />
@@ -87,10 +103,11 @@ export function LoginPage() {
         <button
           id="login-submit"
           type="submit"
-          disabled={isLoading}
+          disabled={isPending}
           className="w-full flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold rounded-full py-3 text-h7 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Sign In</span>}
+          {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+          <span>{isPending ? 'Sedang masuk...' : 'Sign In'}</span>
         </button>
 
         {/* Google */}

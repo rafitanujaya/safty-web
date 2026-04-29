@@ -1,11 +1,14 @@
-export const BASE_URL = "https://api.example.com"; // Hardcoded link untuk saat ini
+export const BASE_URL = "http://localhost:3000/api/";
 
 /**
  * Wrapper function untuk melakukan fetch ke API
  * @param endpoint Endpoint API (contoh: '/users')
  * @param options Opsi fetch opsional (method, headers, body, dll.)
  */
-export const fetchApi = async <T,>(endpoint: string, options: RequestInit = {}): Promise<T> => {
+export const fetchApi = async <T>(
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<T> => {
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       ...options,
